@@ -1,0 +1,5 @@
+syntax = "proto3";
+
+package quiz_arena.quiz_registry.v1;
+
+service QuizRegistryService {}
