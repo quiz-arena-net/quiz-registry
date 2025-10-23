@@ -9,7 +9,10 @@ package quiz_registryv1
 import (
 	protoreflect "google.golang.org/protobuf/reflect/protoreflect"
 	protoimpl "google.golang.org/protobuf/runtime/protoimpl"
+	fieldmaskpb "google.golang.org/protobuf/types/known/fieldmaskpb"
+	timestamppb "google.golang.org/protobuf/types/known/timestamppb"
 	reflect "reflect"
+	sync "sync"
 	unsafe "unsafe"
 )
 
@@ -20,21 +23,1681 @@ const (
 	_ = protoimpl.EnforceVersion(protoimpl.MaxVersion - 20)
 )
 
+type CreateQuizRequest struct {
+	state protoimpl.MessageState `protogen:"open.v1"`
+	// Parent list that will own the quiz.
+	ListId string `protobuf:"bytes,1,opt,name=list_id,json=listId,proto3" json:"list_id,omitempty"`
+	// Content
+	Question      string           `protobuf:"bytes,2,opt,name=question,proto3" json:"question,omitempty"`
+	Answer        string           `protobuf:"bytes,3,opt,name=answer,proto3" json:"answer,omitempty"`
+	AnswerOptions []*AnswerOptions `protobuf:"bytes,4,rep,name=answer_options,json=answerOptions,proto3" json:"answer_options,omitempty"`
+	Tags          []string         `protobuf:"bytes,5,rep,name=tags,proto3" json:"tags,omitempty"`
+	// Optional metadata
+	Source        *QuizSource `protobuf:"bytes,6,opt,name=source,proto3,oneof" json:"source,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *CreateQuizRequest) Reset() {
+	*x = CreateQuizRequest{}
+	mi := &file_quiz_arena_quiz_registry_v1_quiz_registry_proto_msgTypes[0]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *CreateQuizRequest) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*CreateQuizRequest) ProtoMessage() {}
+
+func (x *CreateQuizRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_quiz_arena_quiz_registry_v1_quiz_registry_proto_msgTypes[0]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use CreateQuizRequest.ProtoReflect.Descriptor instead.
+func (*CreateQuizRequest) Descriptor() ([]byte, []int) {
+	return file_quiz_arena_quiz_registry_v1_quiz_registry_proto_rawDescGZIP(), []int{0}
+}
+
+func (x *CreateQuizRequest) GetListId() string {
+	if x != nil {
+		return x.ListId
+	}
+	return ""
+}
+
+func (x *CreateQuizRequest) GetQuestion() string {
+	if x != nil {
+		return x.Question
+	}
+	return ""
+}
+
+func (x *CreateQuizRequest) GetAnswer() string {
+	if x != nil {
+		return x.Answer
+	}
+	return ""
+}
+
+func (x *CreateQuizRequest) GetAnswerOptions() []*AnswerOptions {
+	if x != nil {
+		return x.AnswerOptions
+	}
+	return nil
+}
+
+func (x *CreateQuizRequest) GetTags() []string {
+	if x != nil {
+		return x.Tags
+	}
+	return nil
+}
+
+func (x *CreateQuizRequest) GetSource() *QuizSource {
+	if x != nil {
+		return x.Source
+	}
+	return nil
+}
+
+type CreateQuizResponse struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	Quiz          *Quiz                  `protobuf:"bytes,1,opt,name=quiz,proto3" json:"quiz,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *CreateQuizResponse) Reset() {
+	*x = CreateQuizResponse{}
+	mi := &file_quiz_arena_quiz_registry_v1_quiz_registry_proto_msgTypes[1]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *CreateQuizResponse) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*CreateQuizResponse) ProtoMessage() {}
+
+func (x *CreateQuizResponse) ProtoReflect() protoreflect.Message {
+	mi := &file_quiz_arena_quiz_registry_v1_quiz_registry_proto_msgTypes[1]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use CreateQuizResponse.ProtoReflect.Descriptor instead.
+func (*CreateQuizResponse) Descriptor() ([]byte, []int) {
+	return file_quiz_arena_quiz_registry_v1_quiz_registry_proto_rawDescGZIP(), []int{1}
+}
+
+func (x *CreateQuizResponse) GetQuiz() *Quiz {
+	if x != nil {
+		return x.Quiz
+	}
+	return nil
+}
+
+type GetQuizRequest struct {
+	state protoimpl.MessageState `protogen:"open.v1"`
+	Id    string                 `protobuf:"bytes,1,opt,name=id,proto3" json:"id,omitempty"`
+	// Optional field mask to specify which fields to return.
+	// If unset or empty, the server returns all fields.
+	ReadMask      *fieldmaskpb.FieldMask `protobuf:"bytes,2,opt,name=read_mask,json=readMask,proto3,oneof" json:"read_mask,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *GetQuizRequest) Reset() {
+	*x = GetQuizRequest{}
+	mi := &file_quiz_arena_quiz_registry_v1_quiz_registry_proto_msgTypes[2]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *GetQuizRequest) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*GetQuizRequest) ProtoMessage() {}
+
+func (x *GetQuizRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_quiz_arena_quiz_registry_v1_quiz_registry_proto_msgTypes[2]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use GetQuizRequest.ProtoReflect.Descriptor instead.
+func (*GetQuizRequest) Descriptor() ([]byte, []int) {
+	return file_quiz_arena_quiz_registry_v1_quiz_registry_proto_rawDescGZIP(), []int{2}
+}
+
+func (x *GetQuizRequest) GetId() string {
+	if x != nil {
+		return x.Id
+	}
+	return ""
+}
+
+func (x *GetQuizRequest) GetReadMask() *fieldmaskpb.FieldMask {
+	if x != nil {
+		return x.ReadMask
+	}
+	return nil
+}
+
+type GetQuizResponse struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	Quiz          *Quiz                  `protobuf:"bytes,1,opt,name=quiz,proto3" json:"quiz,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *GetQuizResponse) Reset() {
+	*x = GetQuizResponse{}
+	mi := &file_quiz_arena_quiz_registry_v1_quiz_registry_proto_msgTypes[3]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *GetQuizResponse) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*GetQuizResponse) ProtoMessage() {}
+
+func (x *GetQuizResponse) ProtoReflect() protoreflect.Message {
+	mi := &file_quiz_arena_quiz_registry_v1_quiz_registry_proto_msgTypes[3]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use GetQuizResponse.ProtoReflect.Descriptor instead.
+func (*GetQuizResponse) Descriptor() ([]byte, []int) {
+	return file_quiz_arena_quiz_registry_v1_quiz_registry_proto_rawDescGZIP(), []int{3}
+}
+
+func (x *GetQuizResponse) GetQuiz() *Quiz {
+	if x != nil {
+		return x.Quiz
+	}
+	return nil
+}
+
+type UpdateQuizRequest struct {
+	state protoimpl.MessageState `protogen:"open.v1"`
+	// The quiz to update. Only fields in update_mask are applied.
+	Quiz *Quiz `protobuf:"bytes,1,opt,name=quiz,proto3" json:"quiz,omitempty"`
+	// Required. Paths relative to Quiz. Example:
+	// "question,answer,answer_options,tags,title,description,source"
+	// Certain fields (e.g. `id`, `created_at`, `updated_at`) must not be included
+	// and will be rejected if set.
+	UpdateMask    *fieldmaskpb.FieldMask `protobuf:"bytes,2,opt,name=update_mask,json=updateMask,proto3" json:"update_mask,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *UpdateQuizRequest) Reset() {
+	*x = UpdateQuizRequest{}
+	mi := &file_quiz_arena_quiz_registry_v1_quiz_registry_proto_msgTypes[4]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *UpdateQuizRequest) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*UpdateQuizRequest) ProtoMessage() {}
+
+func (x *UpdateQuizRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_quiz_arena_quiz_registry_v1_quiz_registry_proto_msgTypes[4]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use UpdateQuizRequest.ProtoReflect.Descriptor instead.
+func (*UpdateQuizRequest) Descriptor() ([]byte, []int) {
+	return file_quiz_arena_quiz_registry_v1_quiz_registry_proto_rawDescGZIP(), []int{4}
+}
+
+func (x *UpdateQuizRequest) GetQuiz() *Quiz {
+	if x != nil {
+		return x.Quiz
+	}
+	return nil
+}
+
+func (x *UpdateQuizRequest) GetUpdateMask() *fieldmaskpb.FieldMask {
+	if x != nil {
+		return x.UpdateMask
+	}
+	return nil
+}
+
+type UpdateQuizResponse struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	Quiz          *Quiz                  `protobuf:"bytes,1,opt,name=quiz,proto3" json:"quiz,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *UpdateQuizResponse) Reset() {
+	*x = UpdateQuizResponse{}
+	mi := &file_quiz_arena_quiz_registry_v1_quiz_registry_proto_msgTypes[5]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *UpdateQuizResponse) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*UpdateQuizResponse) ProtoMessage() {}
+
+func (x *UpdateQuizResponse) ProtoReflect() protoreflect.Message {
+	mi := &file_quiz_arena_quiz_registry_v1_quiz_registry_proto_msgTypes[5]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use UpdateQuizResponse.ProtoReflect.Descriptor instead.
+func (*UpdateQuizResponse) Descriptor() ([]byte, []int) {
+	return file_quiz_arena_quiz_registry_v1_quiz_registry_proto_rawDescGZIP(), []int{5}
+}
+
+func (x *UpdateQuizResponse) GetQuiz() *Quiz {
+	if x != nil {
+		return x.Quiz
+	}
+	return nil
+}
+
+type DeleteQuizRequest struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	Id            string                 `protobuf:"bytes,1,opt,name=id,proto3" json:"id,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *DeleteQuizRequest) Reset() {
+	*x = DeleteQuizRequest{}
+	mi := &file_quiz_arena_quiz_registry_v1_quiz_registry_proto_msgTypes[6]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *DeleteQuizRequest) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*DeleteQuizRequest) ProtoMessage() {}
+
+func (x *DeleteQuizRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_quiz_arena_quiz_registry_v1_quiz_registry_proto_msgTypes[6]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use DeleteQuizRequest.ProtoReflect.Descriptor instead.
+func (*DeleteQuizRequest) Descriptor() ([]byte, []int) {
+	return file_quiz_arena_quiz_registry_v1_quiz_registry_proto_rawDescGZIP(), []int{6}
+}
+
+func (x *DeleteQuizRequest) GetId() string {
+	if x != nil {
+		return x.Id
+	}
+	return ""
+}
+
+type DeleteQuizResponse struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	Quiz          *Quiz                  `protobuf:"bytes,1,opt,name=quiz,proto3" json:"quiz,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *DeleteQuizResponse) Reset() {
+	*x = DeleteQuizResponse{}
+	mi := &file_quiz_arena_quiz_registry_v1_quiz_registry_proto_msgTypes[7]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *DeleteQuizResponse) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*DeleteQuizResponse) ProtoMessage() {}
+
+func (x *DeleteQuizResponse) ProtoReflect() protoreflect.Message {
+	mi := &file_quiz_arena_quiz_registry_v1_quiz_registry_proto_msgTypes[7]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use DeleteQuizResponse.ProtoReflect.Descriptor instead.
+func (*DeleteQuizResponse) Descriptor() ([]byte, []int) {
+	return file_quiz_arena_quiz_registry_v1_quiz_registry_proto_rawDescGZIP(), []int{7}
+}
+
+func (x *DeleteQuizResponse) GetQuiz() *Quiz {
+	if x != nil {
+		return x.Quiz
+	}
+	return nil
+}
+
+type ListQuizzesRequest struct {
+	state protoimpl.MessageState `protogen:"open.v1"`
+	// Filter scope
+	ListId   *string `protobuf:"bytes,1,opt,name=list_id,json=listId,proto3,oneof" json:"list_id,omitempty"`       // limit to a list
+	AuthorId *string `protobuf:"bytes,2,opt,name=author_id,json=authorId,proto3,oneof" json:"author_id,omitempty"` // limit to author
+	// Text filter (implementation-defined, e.g., tags:foo AND "substring")
+	Filter *string `protobuf:"bytes,3,opt,name=filter,proto3,oneof" json:"filter,omitempty"`
+	// Sorting (implementation-defined, e.g., "created_at desc")
+	OrderBy  *string                `protobuf:"bytes,4,opt,name=order_by,json=orderBy,proto3,oneof" json:"order_by,omitempty"`
+	ReadMask *fieldmaskpb.FieldMask `protobuf:"bytes,5,opt,name=read_mask,json=readMask,proto3,oneof" json:"read_mask,omitempty"`
+	// Pagination
+	PageSize      int32  `protobuf:"varint,6,opt,name=page_size,json=pageSize,proto3" json:"page_size,omitempty"` // default chosen by server
+	PageToken     string `protobuf:"bytes,7,opt,name=page_token,json=pageToken,proto3" json:"page_token,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *ListQuizzesRequest) Reset() {
+	*x = ListQuizzesRequest{}
+	mi := &file_quiz_arena_quiz_registry_v1_quiz_registry_proto_msgTypes[8]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *ListQuizzesRequest) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*ListQuizzesRequest) ProtoMessage() {}
+
+func (x *ListQuizzesRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_quiz_arena_quiz_registry_v1_quiz_registry_proto_msgTypes[8]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use ListQuizzesRequest.ProtoReflect.Descriptor instead.
+func (*ListQuizzesRequest) Descriptor() ([]byte, []int) {
+	return file_quiz_arena_quiz_registry_v1_quiz_registry_proto_rawDescGZIP(), []int{8}
+}
+
+func (x *ListQuizzesRequest) GetListId() string {
+	if x != nil && x.ListId != nil {
+		return *x.ListId
+	}
+	return ""
+}
+
+func (x *ListQuizzesRequest) GetAuthorId() string {
+	if x != nil && x.AuthorId != nil {
+		return *x.AuthorId
+	}
+	return ""
+}
+
+func (x *ListQuizzesRequest) GetFilter() string {
+	if x != nil && x.Filter != nil {
+		return *x.Filter
+	}
+	return ""
+}
+
+func (x *ListQuizzesRequest) GetOrderBy() string {
+	if x != nil && x.OrderBy != nil {
+		return *x.OrderBy
+	}
+	return ""
+}
+
+func (x *ListQuizzesRequest) GetReadMask() *fieldmaskpb.FieldMask {
+	if x != nil {
+		return x.ReadMask
+	}
+	return nil
+}
+
+func (x *ListQuizzesRequest) GetPageSize() int32 {
+	if x != nil {
+		return x.PageSize
+	}
+	return 0
+}
+
+func (x *ListQuizzesRequest) GetPageToken() string {
+	if x != nil {
+		return x.PageToken
+	}
+	return ""
+}
+
+type ListQuizzesResponse struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	Quizzes       []*Quiz                `protobuf:"bytes,1,rep,name=quizzes,proto3" json:"quizzes,omitempty"`
+	NextPageToken string                 `protobuf:"bytes,2,opt,name=next_page_token,json=nextPageToken,proto3" json:"next_page_token,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *ListQuizzesResponse) Reset() {
+	*x = ListQuizzesResponse{}
+	mi := &file_quiz_arena_quiz_registry_v1_quiz_registry_proto_msgTypes[9]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *ListQuizzesResponse) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*ListQuizzesResponse) ProtoMessage() {}
+
+func (x *ListQuizzesResponse) ProtoReflect() protoreflect.Message {
+	mi := &file_quiz_arena_quiz_registry_v1_quiz_registry_proto_msgTypes[9]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use ListQuizzesResponse.ProtoReflect.Descriptor instead.
+func (*ListQuizzesResponse) Descriptor() ([]byte, []int) {
+	return file_quiz_arena_quiz_registry_v1_quiz_registry_proto_rawDescGZIP(), []int{9}
+}
+
+func (x *ListQuizzesResponse) GetQuizzes() []*Quiz {
+	if x != nil {
+		return x.Quizzes
+	}
+	return nil
+}
+
+func (x *ListQuizzesResponse) GetNextPageToken() string {
+	if x != nil {
+		return x.NextPageToken
+	}
+	return ""
+}
+
+type CreateQuizListRequest struct {
+	state protoimpl.MessageState `protogen:"open.v1"`
+	// Minimal fields to create a list.
+	Title         string   `protobuf:"bytes,1,opt,name=title,proto3" json:"title,omitempty"`
+	Description   *string  `protobuf:"bytes,2,opt,name=description,proto3,oneof" json:"description,omitempty"`
+	Language      *string  `protobuf:"bytes,3,opt,name=language,proto3,oneof" json:"language,omitempty"`
+	Tags          []string `protobuf:"bytes,4,rep,name=tags,proto3" json:"tags,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *CreateQuizListRequest) Reset() {
+	*x = CreateQuizListRequest{}
+	mi := &file_quiz_arena_quiz_registry_v1_quiz_registry_proto_msgTypes[10]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *CreateQuizListRequest) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*CreateQuizListRequest) ProtoMessage() {}
+
+func (x *CreateQuizListRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_quiz_arena_quiz_registry_v1_quiz_registry_proto_msgTypes[10]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use CreateQuizListRequest.ProtoReflect.Descriptor instead.
+func (*CreateQuizListRequest) Descriptor() ([]byte, []int) {
+	return file_quiz_arena_quiz_registry_v1_quiz_registry_proto_rawDescGZIP(), []int{10}
+}
+
+func (x *CreateQuizListRequest) GetTitle() string {
+	if x != nil {
+		return x.Title
+	}
+	return ""
+}
+
+func (x *CreateQuizListRequest) GetDescription() string {
+	if x != nil && x.Description != nil {
+		return *x.Description
+	}
+	return ""
+}
+
+func (x *CreateQuizListRequest) GetLanguage() string {
+	if x != nil && x.Language != nil {
+		return *x.Language
+	}
+	return ""
+}
+
+func (x *CreateQuizListRequest) GetTags() []string {
+	if x != nil {
+		return x.Tags
+	}
+	return nil
+}
+
+type CreateQuizListResponse struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	QuizList      *QuizList              `protobuf:"bytes,1,opt,name=quiz_list,json=quizList,proto3" json:"quiz_list,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *CreateQuizListResponse) Reset() {
+	*x = CreateQuizListResponse{}
+	mi := &file_quiz_arena_quiz_registry_v1_quiz_registry_proto_msgTypes[11]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *CreateQuizListResponse) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*CreateQuizListResponse) ProtoMessage() {}
+
+func (x *CreateQuizListResponse) ProtoReflect() protoreflect.Message {
+	mi := &file_quiz_arena_quiz_registry_v1_quiz_registry_proto_msgTypes[11]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use CreateQuizListResponse.ProtoReflect.Descriptor instead.
+func (*CreateQuizListResponse) Descriptor() ([]byte, []int) {
+	return file_quiz_arena_quiz_registry_v1_quiz_registry_proto_rawDescGZIP(), []int{11}
+}
+
+func (x *CreateQuizListResponse) GetQuizList() *QuizList {
+	if x != nil {
+		return x.QuizList
+	}
+	return nil
+}
+
+type GetQuizListRequest struct {
+	state protoimpl.MessageState `protogen:"open.v1"`
+	Id    string                 `protobuf:"bytes,1,opt,name=id,proto3" json:"id,omitempty"`
+	// Optional field mask to specify which fields to return.
+	// If unset or empty, the server returns all fields.
+	ReadMask      *fieldmaskpb.FieldMask `protobuf:"bytes,2,opt,name=read_mask,json=readMask,proto3,oneof" json:"read_mask,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *GetQuizListRequest) Reset() {
+	*x = GetQuizListRequest{}
+	mi := &file_quiz_arena_quiz_registry_v1_quiz_registry_proto_msgTypes[12]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *GetQuizListRequest) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*GetQuizListRequest) ProtoMessage() {}
+
+func (x *GetQuizListRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_quiz_arena_quiz_registry_v1_quiz_registry_proto_msgTypes[12]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use GetQuizListRequest.ProtoReflect.Descriptor instead.
+func (*GetQuizListRequest) Descriptor() ([]byte, []int) {
+	return file_quiz_arena_quiz_registry_v1_quiz_registry_proto_rawDescGZIP(), []int{12}
+}
+
+func (x *GetQuizListRequest) GetId() string {
+	if x != nil {
+		return x.Id
+	}
+	return ""
+}
+
+func (x *GetQuizListRequest) GetReadMask() *fieldmaskpb.FieldMask {
+	if x != nil {
+		return x.ReadMask
+	}
+	return nil
+}
+
+type GetQuizListResponse struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	QuizList      *QuizList              `protobuf:"bytes,1,opt,name=quiz_list,json=quizList,proto3" json:"quiz_list,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *GetQuizListResponse) Reset() {
+	*x = GetQuizListResponse{}
+	mi := &file_quiz_arena_quiz_registry_v1_quiz_registry_proto_msgTypes[13]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *GetQuizListResponse) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*GetQuizListResponse) ProtoMessage() {}
+
+func (x *GetQuizListResponse) ProtoReflect() protoreflect.Message {
+	mi := &file_quiz_arena_quiz_registry_v1_quiz_registry_proto_msgTypes[13]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use GetQuizListResponse.ProtoReflect.Descriptor instead.
+func (*GetQuizListResponse) Descriptor() ([]byte, []int) {
+	return file_quiz_arena_quiz_registry_v1_quiz_registry_proto_rawDescGZIP(), []int{13}
+}
+
+func (x *GetQuizListResponse) GetQuizList() *QuizList {
+	if x != nil {
+		return x.QuizList
+	}
+	return nil
+}
+
+type UpdateQuizListRequest struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	QuizList      *QuizList              `protobuf:"bytes,1,opt,name=quiz_list,json=quizList,proto3" json:"quiz_list,omitempty"`
+	UpdateMask    *fieldmaskpb.FieldMask `protobuf:"bytes,2,opt,name=update_mask,json=updateMask,proto3" json:"update_mask,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *UpdateQuizListRequest) Reset() {
+	*x = UpdateQuizListRequest{}
+	mi := &file_quiz_arena_quiz_registry_v1_quiz_registry_proto_msgTypes[14]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *UpdateQuizListRequest) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*UpdateQuizListRequest) ProtoMessage() {}
+
+func (x *UpdateQuizListRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_quiz_arena_quiz_registry_v1_quiz_registry_proto_msgTypes[14]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use UpdateQuizListRequest.ProtoReflect.Descriptor instead.
+func (*UpdateQuizListRequest) Descriptor() ([]byte, []int) {
+	return file_quiz_arena_quiz_registry_v1_quiz_registry_proto_rawDescGZIP(), []int{14}
+}
+
+func (x *UpdateQuizListRequest) GetQuizList() *QuizList {
+	if x != nil {
+		return x.QuizList
+	}
+	return nil
+}
+
+func (x *UpdateQuizListRequest) GetUpdateMask() *fieldmaskpb.FieldMask {
+	if x != nil {
+		return x.UpdateMask
+	}
+	return nil
+}
+
+type UpdateQuizListResponse struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	QuizList      *QuizList              `protobuf:"bytes,1,opt,name=quiz_list,json=quizList,proto3" json:"quiz_list,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *UpdateQuizListResponse) Reset() {
+	*x = UpdateQuizListResponse{}
+	mi := &file_quiz_arena_quiz_registry_v1_quiz_registry_proto_msgTypes[15]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *UpdateQuizListResponse) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*UpdateQuizListResponse) ProtoMessage() {}
+
+func (x *UpdateQuizListResponse) ProtoReflect() protoreflect.Message {
+	mi := &file_quiz_arena_quiz_registry_v1_quiz_registry_proto_msgTypes[15]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use UpdateQuizListResponse.ProtoReflect.Descriptor instead.
+func (*UpdateQuizListResponse) Descriptor() ([]byte, []int) {
+	return file_quiz_arena_quiz_registry_v1_quiz_registry_proto_rawDescGZIP(), []int{15}
+}
+
+func (x *UpdateQuizListResponse) GetQuizList() *QuizList {
+	if x != nil {
+		return x.QuizList
+	}
+	return nil
+}
+
+type DeleteQuizListRequest struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	Id            string                 `protobuf:"bytes,1,opt,name=id,proto3" json:"id,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *DeleteQuizListRequest) Reset() {
+	*x = DeleteQuizListRequest{}
+	mi := &file_quiz_arena_quiz_registry_v1_quiz_registry_proto_msgTypes[16]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *DeleteQuizListRequest) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*DeleteQuizListRequest) ProtoMessage() {}
+
+func (x *DeleteQuizListRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_quiz_arena_quiz_registry_v1_quiz_registry_proto_msgTypes[16]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use DeleteQuizListRequest.ProtoReflect.Descriptor instead.
+func (*DeleteQuizListRequest) Descriptor() ([]byte, []int) {
+	return file_quiz_arena_quiz_registry_v1_quiz_registry_proto_rawDescGZIP(), []int{16}
+}
+
+func (x *DeleteQuizListRequest) GetId() string {
+	if x != nil {
+		return x.Id
+	}
+	return ""
+}
+
+type DeleteQuizListResponse struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	QuizList      *QuizList              `protobuf:"bytes,1,opt,name=quiz_list,json=quizList,proto3" json:"quiz_list,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *DeleteQuizListResponse) Reset() {
+	*x = DeleteQuizListResponse{}
+	mi := &file_quiz_arena_quiz_registry_v1_quiz_registry_proto_msgTypes[17]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *DeleteQuizListResponse) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*DeleteQuizListResponse) ProtoMessage() {}
+
+func (x *DeleteQuizListResponse) ProtoReflect() protoreflect.Message {
+	mi := &file_quiz_arena_quiz_registry_v1_quiz_registry_proto_msgTypes[17]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use DeleteQuizListResponse.ProtoReflect.Descriptor instead.
+func (*DeleteQuizListResponse) Descriptor() ([]byte, []int) {
+	return file_quiz_arena_quiz_registry_v1_quiz_registry_proto_rawDescGZIP(), []int{17}
+}
+
+func (x *DeleteQuizListResponse) GetQuizList() *QuizList {
+	if x != nil {
+		return x.QuizList
+	}
+	return nil
+}
+
+type ListQuizListsRequest struct {
+	state protoimpl.MessageState `protogen:"open.v1"`
+	// Scope and filtering
+	OwnerId  *string                `protobuf:"bytes,1,opt,name=owner_id,json=ownerId,proto3,oneof" json:"owner_id,omitempty"`
+	Filter   *string                `protobuf:"bytes,2,opt,name=filter,proto3,oneof" json:"filter,omitempty"`
+	OrderBy  *string                `protobuf:"bytes,3,opt,name=order_by,json=orderBy,proto3,oneof" json:"order_by,omitempty"`
+	ReadMask *fieldmaskpb.FieldMask `protobuf:"bytes,5,opt,name=read_mask,json=readMask,proto3,oneof" json:"read_mask,omitempty"`
+	// Pagination
+	PageSize      int32  `protobuf:"varint,6,opt,name=page_size,json=pageSize,proto3" json:"page_size,omitempty"`
+	PageToken     string `protobuf:"bytes,7,opt,name=page_token,json=pageToken,proto3" json:"page_token,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *ListQuizListsRequest) Reset() {
+	*x = ListQuizListsRequest{}
+	mi := &file_quiz_arena_quiz_registry_v1_quiz_registry_proto_msgTypes[18]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *ListQuizListsRequest) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*ListQuizListsRequest) ProtoMessage() {}
+
+func (x *ListQuizListsRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_quiz_arena_quiz_registry_v1_quiz_registry_proto_msgTypes[18]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use ListQuizListsRequest.ProtoReflect.Descriptor instead.
+func (*ListQuizListsRequest) Descriptor() ([]byte, []int) {
+	return file_quiz_arena_quiz_registry_v1_quiz_registry_proto_rawDescGZIP(), []int{18}
+}
+
+func (x *ListQuizListsRequest) GetOwnerId() string {
+	if x != nil && x.OwnerId != nil {
+		return *x.OwnerId
+	}
+	return ""
+}
+
+func (x *ListQuizListsRequest) GetFilter() string {
+	if x != nil && x.Filter != nil {
+		return *x.Filter
+	}
+	return ""
+}
+
+func (x *ListQuizListsRequest) GetOrderBy() string {
+	if x != nil && x.OrderBy != nil {
+		return *x.OrderBy
+	}
+	return ""
+}
+
+func (x *ListQuizListsRequest) GetReadMask() *fieldmaskpb.FieldMask {
+	if x != nil {
+		return x.ReadMask
+	}
+	return nil
+}
+
+func (x *ListQuizListsRequest) GetPageSize() int32 {
+	if x != nil {
+		return x.PageSize
+	}
+	return 0
+}
+
+func (x *ListQuizListsRequest) GetPageToken() string {
+	if x != nil {
+		return x.PageToken
+	}
+	return ""
+}
+
+type ListQuizListsResponse struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	QuizLists     []*QuizList            `protobuf:"bytes,1,rep,name=quiz_lists,json=quizLists,proto3" json:"quiz_lists,omitempty"`
+	NextPageToken string                 `protobuf:"bytes,2,opt,name=next_page_token,json=nextPageToken,proto3" json:"next_page_token,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *ListQuizListsResponse) Reset() {
+	*x = ListQuizListsResponse{}
+	mi := &file_quiz_arena_quiz_registry_v1_quiz_registry_proto_msgTypes[19]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *ListQuizListsResponse) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*ListQuizListsResponse) ProtoMessage() {}
+
+func (x *ListQuizListsResponse) ProtoReflect() protoreflect.Message {
+	mi := &file_quiz_arena_quiz_registry_v1_quiz_registry_proto_msgTypes[19]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use ListQuizListsResponse.ProtoReflect.Descriptor instead.
+func (*ListQuizListsResponse) Descriptor() ([]byte, []int) {
+	return file_quiz_arena_quiz_registry_v1_quiz_registry_proto_rawDescGZIP(), []int{19}
+}
+
+func (x *ListQuizListsResponse) GetQuizLists() []*QuizList {
+	if x != nil {
+		return x.QuizLists
+	}
+	return nil
+}
+
+func (x *ListQuizListsResponse) GetNextPageToken() string {
+	if x != nil {
+		return x.NextPageToken
+	}
+	return ""
+}
+
+type AnswerOptions struct {
+	state protoimpl.MessageState `protogen:"open.v1"`
+	// one correct and several wrong choices.
+	// Keep strings literal to allow non-indexed correctness.
+	CorrectOption string   `protobuf:"bytes,1,opt,name=correct_option,json=correctOption,proto3" json:"correct_option,omitempty"`
+	WrongOptions  []string `protobuf:"bytes,2,rep,name=wrong_options,json=wrongOptions,proto3" json:"wrong_options,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *AnswerOptions) Reset() {
+	*x = AnswerOptions{}
+	mi := &file_quiz_arena_quiz_registry_v1_quiz_registry_proto_msgTypes[20]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *AnswerOptions) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*AnswerOptions) ProtoMessage() {}
+
+func (x *AnswerOptions) ProtoReflect() protoreflect.Message {
+	mi := &file_quiz_arena_quiz_registry_v1_quiz_registry_proto_msgTypes[20]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use AnswerOptions.ProtoReflect.Descriptor instead.
+func (*AnswerOptions) Descriptor() ([]byte, []int) {
+	return file_quiz_arena_quiz_registry_v1_quiz_registry_proto_rawDescGZIP(), []int{20}
+}
+
+func (x *AnswerOptions) GetCorrectOption() string {
+	if x != nil {
+		return x.CorrectOption
+	}
+	return ""
+}
+
+func (x *AnswerOptions) GetWrongOptions() []string {
+	if x != nil {
+		return x.WrongOptions
+	}
+	return nil
+}
+
+type QuizSource struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	Name          string                 `protobuf:"bytes,1,opt,name=name,proto3" json:"name,omitempty"`
+	Url           *string                `protobuf:"bytes,2,opt,name=url,proto3,oneof" json:"url,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *QuizSource) Reset() {
+	*x = QuizSource{}
+	mi := &file_quiz_arena_quiz_registry_v1_quiz_registry_proto_msgTypes[21]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *QuizSource) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*QuizSource) ProtoMessage() {}
+
+func (x *QuizSource) ProtoReflect() protoreflect.Message {
+	mi := &file_quiz_arena_quiz_registry_v1_quiz_registry_proto_msgTypes[21]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use QuizSource.ProtoReflect.Descriptor instead.
+func (*QuizSource) Descriptor() ([]byte, []int) {
+	return file_quiz_arena_quiz_registry_v1_quiz_registry_proto_rawDescGZIP(), []int{21}
+}
+
+func (x *QuizSource) GetName() string {
+	if x != nil {
+		return x.Name
+	}
+	return ""
+}
+
+func (x *QuizSource) GetUrl() string {
+	if x != nil && x.Url != nil {
+		return *x.Url
+	}
+	return ""
+}
+
+type Quiz struct {
+	state protoimpl.MessageState `protogen:"open.v1"`
+	// Identity
+	Id       string `protobuf:"bytes,1,opt,name=id,proto3" json:"id,omitempty"`
+	ListId   string `protobuf:"bytes,2,opt,name=list_id,json=listId,proto3" json:"list_id,omitempty"`
+	AuthorId string `protobuf:"bytes,3,opt,name=author_id,json=authorId,proto3" json:"author_id,omitempty"`
+	// Content
+	Question      string           `protobuf:"bytes,4,opt,name=question,proto3" json:"question,omitempty"`
+	Answer        string           `protobuf:"bytes,5,opt,name=answer,proto3" json:"answer,omitempty"`
+	AnswerOptions []*AnswerOptions `protobuf:"bytes,6,rep,name=answer_options,json=answerOptions,proto3" json:"answer_options,omitempty"`
+	Tags          []string         `protobuf:"bytes,7,rep,name=tags,proto3" json:"tags,omitempty"`
+	Source        *QuizSource      `protobuf:"bytes,8,opt,name=source,proto3,oneof" json:"source,omitempty"`
+	// Timestamps
+	CreatedAt     *timestamppb.Timestamp `protobuf:"bytes,9,opt,name=created_at,json=createdAt,proto3" json:"created_at,omitempty"`
+	UpdatedAt     *timestamppb.Timestamp `protobuf:"bytes,10,opt,name=updated_at,json=updatedAt,proto3" json:"updated_at,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *Quiz) Reset() {
+	*x = Quiz{}
+	mi := &file_quiz_arena_quiz_registry_v1_quiz_registry_proto_msgTypes[22]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *Quiz) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*Quiz) ProtoMessage() {}
+
+func (x *Quiz) ProtoReflect() protoreflect.Message {
+	mi := &file_quiz_arena_quiz_registry_v1_quiz_registry_proto_msgTypes[22]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use Quiz.ProtoReflect.Descriptor instead.
+func (*Quiz) Descriptor() ([]byte, []int) {
+	return file_quiz_arena_quiz_registry_v1_quiz_registry_proto_rawDescGZIP(), []int{22}
+}
+
+func (x *Quiz) GetId() string {
+	if x != nil {
+		return x.Id
+	}
+	return ""
+}
+
+func (x *Quiz) GetListId() string {
+	if x != nil {
+		return x.ListId
+	}
+	return ""
+}
+
+func (x *Quiz) GetAuthorId() string {
+	if x != nil {
+		return x.AuthorId
+	}
+	return ""
+}
+
+func (x *Quiz) GetQuestion() string {
+	if x != nil {
+		return x.Question
+	}
+	return ""
+}
+
+func (x *Quiz) GetAnswer() string {
+	if x != nil {
+		return x.Answer
+	}
+	return ""
+}
+
+func (x *Quiz) GetAnswerOptions() []*AnswerOptions {
+	if x != nil {
+		return x.AnswerOptions
+	}
+	return nil
+}
+
+func (x *Quiz) GetTags() []string {
+	if x != nil {
+		return x.Tags
+	}
+	return nil
+}
+
+func (x *Quiz) GetSource() *QuizSource {
+	if x != nil {
+		return x.Source
+	}
+	return nil
+}
+
+func (x *Quiz) GetCreatedAt() *timestamppb.Timestamp {
+	if x != nil {
+		return x.CreatedAt
+	}
+	return nil
+}
+
+func (x *Quiz) GetUpdatedAt() *timestamppb.Timestamp {
+	if x != nil {
+		return x.UpdatedAt
+	}
+	return nil
+}
+
+type QuizList struct {
+	state protoimpl.MessageState `protogen:"open.v1"`
+	// Identity
+	Id      string `protobuf:"bytes,1,opt,name=id,proto3" json:"id,omitempty"`
+	OwnerId string `protobuf:"bytes,2,opt,name=owner_id,json=ownerId,proto3" json:"owner_id,omitempty"`
+	// Content
+	Title       string   `protobuf:"bytes,3,opt,name=title,proto3" json:"title,omitempty"`
+	Description string   `protobuf:"bytes,4,opt,name=description,proto3" json:"description,omitempty"`
+	Language    string   `protobuf:"bytes,5,opt,name=language,proto3" json:"language,omitempty"`
+	QuizCount   int32    `protobuf:"varint,6,opt,name=quiz_count,json=quizCount,proto3" json:"quiz_count,omitempty"`
+	Tags        []string `protobuf:"bytes,7,rep,name=tags,proto3" json:"tags,omitempty"`
+	// Timestamps
+	CreatedAt     *timestamppb.Timestamp `protobuf:"bytes,8,opt,name=created_at,json=createdAt,proto3" json:"created_at,omitempty"`
+	UpdatedAt     *timestamppb.Timestamp `protobuf:"bytes,9,opt,name=updated_at,json=updatedAt,proto3" json:"updated_at,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *QuizList) Reset() {
+	*x = QuizList{}
+	mi := &file_quiz_arena_quiz_registry_v1_quiz_registry_proto_msgTypes[23]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *QuizList) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*QuizList) ProtoMessage() {}
+
+func (x *QuizList) ProtoReflect() protoreflect.Message {
+	mi := &file_quiz_arena_quiz_registry_v1_quiz_registry_proto_msgTypes[23]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use QuizList.ProtoReflect.Descriptor instead.
+func (*QuizList) Descriptor() ([]byte, []int) {
+	return file_quiz_arena_quiz_registry_v1_quiz_registry_proto_rawDescGZIP(), []int{23}
+}
+
+func (x *QuizList) GetId() string {
+	if x != nil {
+		return x.Id
+	}
+	return ""
+}
+
+func (x *QuizList) GetOwnerId() string {
+	if x != nil {
+		return x.OwnerId
+	}
+	return ""
+}
+
+func (x *QuizList) GetTitle() string {
+	if x != nil {
+		return x.Title
+	}
+	return ""
+}
+
+func (x *QuizList) GetDescription() string {
+	if x != nil {
+		return x.Description
+	}
+	return ""
+}
+
+func (x *QuizList) GetLanguage() string {
+	if x != nil {
+		return x.Language
+	}
+	return ""
+}
+
+func (x *QuizList) GetQuizCount() int32 {
+	if x != nil {
+		return x.QuizCount
+	}
+	return 0
+}
+
+func (x *QuizList) GetTags() []string {
+	if x != nil {
+		return x.Tags
+	}
+	return nil
+}
+
+func (x *QuizList) GetCreatedAt() *timestamppb.Timestamp {
+	if x != nil {
+		return x.CreatedAt
+	}
+	return nil
+}
+
+func (x *QuizList) GetUpdatedAt() *timestamppb.Timestamp {
+	if x != nil {
+		return x.UpdatedAt
+	}
+	return nil
+}
+
 var File_quiz_arena_quiz_registry_v1_quiz_registry_proto protoreflect.FileDescriptor
 
 const file_quiz_arena_quiz_registry_v1_quiz_registry_proto_rawDesc = "" +
 	"\n" +
-	"/quiz_arena/quiz_registry/v1/quiz_registry.proto\x12\x1bquiz_arena.quiz_registry.v12\x15\n" +
-	"\x13QuizRegistryServiceB\x93\x02\n" +
+	"/quiz_arena/quiz_registry/v1/quiz_registry.proto\x12\x1bquiz_arena.quiz_registry.v1\x1a google/protobuf/field_mask.proto\x1a\x1fgoogle/protobuf/timestamp.proto\"\x98\x02\n" +
+	"\x11CreateQuizRequest\x12\x17\n" +
+	"\alist_id\x18\x01 \x01(\tR\x06listId\x12\x1a\n" +
+	"\bquestion\x18\x02 \x01(\tR\bquestion\x12\x16\n" +
+	"\x06answer\x18\x03 \x01(\tR\x06answer\x12Q\n" +
+	"\x0eanswer_options\x18\x04 \x03(\v2*.quiz_arena.quiz_registry.v1.AnswerOptionsR\ranswerOptions\x12\x12\n" +
+	"\x04tags\x18\x05 \x03(\tR\x04tags\x12D\n" +
+	"\x06source\x18\x06 \x01(\v2'.quiz_arena.quiz_registry.v1.QuizSourceH\x00R\x06source\x88\x01\x01B\t\n" +
+	"\a_source\"K\n" +
+	"\x12CreateQuizResponse\x125\n" +
+	"\x04quiz\x18\x01 \x01(\v2!.quiz_arena.quiz_registry.v1.QuizR\x04quiz\"l\n" +
+	"\x0eGetQuizRequest\x12\x0e\n" +
+	"\x02id\x18\x01 \x01(\tR\x02id\x12<\n" +
+	"\tread_mask\x18\x02 \x01(\v2\x1a.google.protobuf.FieldMaskH\x00R\breadMask\x88\x01\x01B\f\n" +
+	"\n" +
+	"_read_mask\"H\n" +
+	"\x0fGetQuizResponse\x125\n" +
+	"\x04quiz\x18\x01 \x01(\v2!.quiz_arena.quiz_registry.v1.QuizR\x04quiz\"\x87\x01\n" +
+	"\x11UpdateQuizRequest\x125\n" +
+	"\x04quiz\x18\x01 \x01(\v2!.quiz_arena.quiz_registry.v1.QuizR\x04quiz\x12;\n" +
+	"\vupdate_mask\x18\x02 \x01(\v2\x1a.google.protobuf.FieldMaskR\n" +
+	"updateMask\"K\n" +
+	"\x12UpdateQuizResponse\x125\n" +
+	"\x04quiz\x18\x01 \x01(\v2!.quiz_arena.quiz_registry.v1.QuizR\x04quiz\"#\n" +
+	"\x11DeleteQuizRequest\x12\x0e\n" +
+	"\x02id\x18\x01 \x01(\tR\x02id\"K\n" +
+	"\x12DeleteQuizResponse\x125\n" +
+	"\x04quiz\x18\x01 \x01(\v2!.quiz_arena.quiz_registry.v1.QuizR\x04quiz\"\xcb\x02\n" +
+	"\x12ListQuizzesRequest\x12\x1c\n" +
+	"\alist_id\x18\x01 \x01(\tH\x00R\x06listId\x88\x01\x01\x12 \n" +
+	"\tauthor_id\x18\x02 \x01(\tH\x01R\bauthorId\x88\x01\x01\x12\x1b\n" +
+	"\x06filter\x18\x03 \x01(\tH\x02R\x06filter\x88\x01\x01\x12\x1e\n" +
+	"\border_by\x18\x04 \x01(\tH\x03R\aorderBy\x88\x01\x01\x12<\n" +
+	"\tread_mask\x18\x05 \x01(\v2\x1a.google.protobuf.FieldMaskH\x04R\breadMask\x88\x01\x01\x12\x1b\n" +
+	"\tpage_size\x18\x06 \x01(\x05R\bpageSize\x12\x1d\n" +
+	"\n" +
+	"page_token\x18\a \x01(\tR\tpageTokenB\n" +
+	"\n" +
+	"\b_list_idB\f\n" +
+	"\n" +
+	"_author_idB\t\n" +
+	"\a_filterB\v\n" +
+	"\t_order_byB\f\n" +
+	"\n" +
+	"_read_mask\"z\n" +
+	"\x13ListQuizzesResponse\x12;\n" +
+	"\aquizzes\x18\x01 \x03(\v2!.quiz_arena.quiz_registry.v1.QuizR\aquizzes\x12&\n" +
+	"\x0fnext_page_token\x18\x02 \x01(\tR\rnextPageToken\"\xa6\x01\n" +
+	"\x15CreateQuizListRequest\x12\x14\n" +
+	"\x05title\x18\x01 \x01(\tR\x05title\x12%\n" +
+	"\vdescription\x18\x02 \x01(\tH\x00R\vdescription\x88\x01\x01\x12\x1f\n" +
+	"\blanguage\x18\x03 \x01(\tH\x01R\blanguage\x88\x01\x01\x12\x12\n" +
+	"\x04tags\x18\x04 \x03(\tR\x04tagsB\x0e\n" +
+	"\f_descriptionB\v\n" +
+	"\t_language\"\\\n" +
+	"\x16CreateQuizListResponse\x12B\n" +
+	"\tquiz_list\x18\x01 \x01(\v2%.quiz_arena.quiz_registry.v1.QuizListR\bquizList\"p\n" +
+	"\x12GetQuizListRequest\x12\x0e\n" +
+	"\x02id\x18\x01 \x01(\tR\x02id\x12<\n" +
+	"\tread_mask\x18\x02 \x01(\v2\x1a.google.protobuf.FieldMaskH\x00R\breadMask\x88\x01\x01B\f\n" +
+	"\n" +
+	"_read_mask\"Y\n" +
+	"\x13GetQuizListResponse\x12B\n" +
+	"\tquiz_list\x18\x01 \x01(\v2%.quiz_arena.quiz_registry.v1.QuizListR\bquizList\"\x98\x01\n" +
+	"\x15UpdateQuizListRequest\x12B\n" +
+	"\tquiz_list\x18\x01 \x01(\v2%.quiz_arena.quiz_registry.v1.QuizListR\bquizList\x12;\n" +
+	"\vupdate_mask\x18\x02 \x01(\v2\x1a.google.protobuf.FieldMaskR\n" +
+	"updateMask\"\\\n" +
+	"\x16UpdateQuizListResponse\x12B\n" +
+	"\tquiz_list\x18\x01 \x01(\v2%.quiz_arena.quiz_registry.v1.QuizListR\bquizList\"'\n" +
+	"\x15DeleteQuizListRequest\x12\x0e\n" +
+	"\x02id\x18\x01 \x01(\tR\x02id\"\\\n" +
+	"\x16DeleteQuizListResponse\x12B\n" +
+	"\tquiz_list\x18\x01 \x01(\v2%.quiz_arena.quiz_registry.v1.QuizListR\bquizList\"\xa0\x02\n" +
+	"\x14ListQuizListsRequest\x12\x1e\n" +
+	"\bowner_id\x18\x01 \x01(\tH\x00R\aownerId\x88\x01\x01\x12\x1b\n" +
+	"\x06filter\x18\x02 \x01(\tH\x01R\x06filter\x88\x01\x01\x12\x1e\n" +
+	"\border_by\x18\x03 \x01(\tH\x02R\aorderBy\x88\x01\x01\x12<\n" +
+	"\tread_mask\x18\x05 \x01(\v2\x1a.google.protobuf.FieldMaskH\x03R\breadMask\x88\x01\x01\x12\x1b\n" +
+	"\tpage_size\x18\x06 \x01(\x05R\bpageSize\x12\x1d\n" +
+	"\n" +
+	"page_token\x18\a \x01(\tR\tpageTokenB\v\n" +
+	"\t_owner_idB\t\n" +
+	"\a_filterB\v\n" +
+	"\t_order_byB\f\n" +
+	"\n" +
+	"_read_mask\"\x85\x01\n" +
+	"\x15ListQuizListsResponse\x12D\n" +
+	"\n" +
+	"quiz_lists\x18\x01 \x03(\v2%.quiz_arena.quiz_registry.v1.QuizListR\tquizLists\x12&\n" +
+	"\x0fnext_page_token\x18\x02 \x01(\tR\rnextPageToken\"[\n" +
+	"\rAnswerOptions\x12%\n" +
+	"\x0ecorrect_option\x18\x01 \x01(\tR\rcorrectOption\x12#\n" +
+	"\rwrong_options\x18\x02 \x03(\tR\fwrongOptions\"?\n" +
+	"\n" +
+	"QuizSource\x12\x12\n" +
+	"\x04name\x18\x01 \x01(\tR\x04name\x12\x15\n" +
+	"\x03url\x18\x02 \x01(\tH\x00R\x03url\x88\x01\x01B\x06\n" +
+	"\x04_url\"\xae\x03\n" +
+	"\x04Quiz\x12\x0e\n" +
+	"\x02id\x18\x01 \x01(\tR\x02id\x12\x17\n" +
+	"\alist_id\x18\x02 \x01(\tR\x06listId\x12\x1b\n" +
+	"\tauthor_id\x18\x03 \x01(\tR\bauthorId\x12\x1a\n" +
+	"\bquestion\x18\x04 \x01(\tR\bquestion\x12\x16\n" +
+	"\x06answer\x18\x05 \x01(\tR\x06answer\x12Q\n" +
+	"\x0eanswer_options\x18\x06 \x03(\v2*.quiz_arena.quiz_registry.v1.AnswerOptionsR\ranswerOptions\x12\x12\n" +
+	"\x04tags\x18\a \x03(\tR\x04tags\x12D\n" +
+	"\x06source\x18\b \x01(\v2'.quiz_arena.quiz_registry.v1.QuizSourceH\x00R\x06source\x88\x01\x01\x129\n" +
+	"\n" +
+	"created_at\x18\t \x01(\v2\x1a.google.protobuf.TimestampR\tcreatedAt\x129\n" +
+	"\n" +
+	"updated_at\x18\n" +
+	" \x01(\v2\x1a.google.protobuf.TimestampR\tupdatedAtB\t\n" +
+	"\a_source\"\xb2\x02\n" +
+	"\bQuizList\x12\x0e\n" +
+	"\x02id\x18\x01 \x01(\tR\x02id\x12\x19\n" +
+	"\bowner_id\x18\x02 \x01(\tR\aownerId\x12\x14\n" +
+	"\x05title\x18\x03 \x01(\tR\x05title\x12 \n" +
+	"\vdescription\x18\x04 \x01(\tR\vdescription\x12\x1a\n" +
+	"\blanguage\x18\x05 \x01(\tR\blanguage\x12\x1d\n" +
+	"\n" +
+	"quiz_count\x18\x06 \x01(\x05R\tquizCount\x12\x12\n" +
+	"\x04tags\x18\a \x03(\tR\x04tags\x129\n" +
+	"\n" +
+	"created_at\x18\b \x01(\v2\x1a.google.protobuf.TimestampR\tcreatedAt\x129\n" +
+	"\n" +
+	"updated_at\x18\t \x01(\v2\x1a.google.protobuf.TimestampR\tupdatedAt2\x95\t\n" +
+	"\x13QuizRegistryService\x12m\n" +
+	"\n" +
+	"CreateQuiz\x12..quiz_arena.quiz_registry.v1.CreateQuizRequest\x1a/.quiz_arena.quiz_registry.v1.CreateQuizResponse\x12d\n" +
+	"\aGetQuiz\x12+.quiz_arena.quiz_registry.v1.GetQuizRequest\x1a,.quiz_arena.quiz_registry.v1.GetQuizResponse\x12m\n" +
+	"\n" +
+	"UpdateQuiz\x12..quiz_arena.quiz_registry.v1.UpdateQuizRequest\x1a/.quiz_arena.quiz_registry.v1.UpdateQuizResponse\x12m\n" +
+	"\n" +
+	"DeleteQuiz\x12..quiz_arena.quiz_registry.v1.DeleteQuizRequest\x1a/.quiz_arena.quiz_registry.v1.DeleteQuizResponse\x12p\n" +
+	"\vListQuizzes\x12/.quiz_arena.quiz_registry.v1.ListQuizzesRequest\x1a0.quiz_arena.quiz_registry.v1.ListQuizzesResponse\x12y\n" +
+	"\x0eCreateQuizList\x122.quiz_arena.quiz_registry.v1.CreateQuizListRequest\x1a3.quiz_arena.quiz_registry.v1.CreateQuizListResponse\x12p\n" +
+	"\vGetQuizList\x12/.quiz_arena.quiz_registry.v1.GetQuizListRequest\x1a0.quiz_arena.quiz_registry.v1.GetQuizListResponse\x12y\n" +
+	"\x0eUpdateQuizList\x122.quiz_arena.quiz_registry.v1.UpdateQuizListRequest\x1a3.quiz_arena.quiz_registry.v1.UpdateQuizListResponse\x12y\n" +
+	"\x0eDeleteQuizList\x122.quiz_arena.quiz_registry.v1.DeleteQuizListRequest\x1a3.quiz_arena.quiz_registry.v1.DeleteQuizListResponse\x12v\n" +
+	"\rListQuizLists\x121.quiz_arena.quiz_registry.v1.ListQuizListsRequest\x1a2.quiz_arena.quiz_registry.v1.ListQuizListsResponseB\x93\x02\n" +
 	"\x1fcom.quiz_arena.quiz_registry.v1B\x11QuizRegistryProtoP\x01ZWgithub.com/quiz-arena-net/quiz-registry/gen/quiz_arena/quiz_registry/v1;quiz_registryv1\xa2\x02\x03QQX\xaa\x02\x19QuizArena.QuizRegistry.V1\xca\x02\x19QuizArena\\QuizRegistry\\V1\xe2\x02%QuizArena\\QuizRegistry\\V1\\GPBMetadata\xea\x02\x1bQuizArena::QuizRegistry::V1b\x06proto3"
 
-var file_quiz_arena_quiz_registry_v1_quiz_registry_proto_goTypes = []any{}
+var (
+	file_quiz_arena_quiz_registry_v1_quiz_registry_proto_rawDescOnce sync.Once
+	file_quiz_arena_quiz_registry_v1_quiz_registry_proto_rawDescData []byte
+)
+
+func file_quiz_arena_quiz_registry_v1_quiz_registry_proto_rawDescGZIP() []byte {
+	file_quiz_arena_quiz_registry_v1_quiz_registry_proto_rawDescOnce.Do(func() {
+		file_quiz_arena_quiz_registry_v1_quiz_registry_proto_rawDescData = protoimpl.X.CompressGZIP(unsafe.Slice(unsafe.StringData(file_quiz_arena_quiz_registry_v1_quiz_registry_proto_rawDesc), len(file_quiz_arena_quiz_registry_v1_quiz_registry_proto_rawDesc)))
+	})
+	return file_quiz_arena_quiz_registry_v1_quiz_registry_proto_rawDescData
+}
+
+var file_quiz_arena_quiz_registry_v1_quiz_registry_proto_msgTypes = make([]protoimpl.MessageInfo, 24)
+var file_quiz_arena_quiz_registry_v1_quiz_registry_proto_goTypes = []any{
+	(*CreateQuizRequest)(nil),      // 0: quiz_arena.quiz_registry.v1.CreateQuizRequest
+	(*CreateQuizResponse)(nil),     // 1: quiz_arena.quiz_registry.v1.CreateQuizResponse
+	(*GetQuizRequest)(nil),         // 2: quiz_arena.quiz_registry.v1.GetQuizRequest
+	(*GetQuizResponse)(nil),        // 3: quiz_arena.quiz_registry.v1.GetQuizResponse
+	(*UpdateQuizRequest)(nil),      // 4: quiz_arena.quiz_registry.v1.UpdateQuizRequest
+	(*UpdateQuizResponse)(nil),     // 5: quiz_arena.quiz_registry.v1.UpdateQuizResponse
+	(*DeleteQuizRequest)(nil),      // 6: quiz_arena.quiz_registry.v1.DeleteQuizRequest
+	(*DeleteQuizResponse)(nil),     // 7: quiz_arena.quiz_registry.v1.DeleteQuizResponse
+	(*ListQuizzesRequest)(nil),     // 8: quiz_arena.quiz_registry.v1.ListQuizzesRequest
+	(*ListQuizzesResponse)(nil),    // 9: quiz_arena.quiz_registry.v1.ListQuizzesResponse
+	(*CreateQuizListRequest)(nil),  // 10: quiz_arena.quiz_registry.v1.CreateQuizListRequest
+	(*CreateQuizListResponse)(nil), // 11: quiz_arena.quiz_registry.v1.CreateQuizListResponse
+	(*GetQuizListRequest)(nil),     // 12: quiz_arena.quiz_registry.v1.GetQuizListRequest
+	(*GetQuizListResponse)(nil),    // 13: quiz_arena.quiz_registry.v1.GetQuizListResponse
+	(*UpdateQuizListRequest)(nil),  // 14: quiz_arena.quiz_registry.v1.UpdateQuizListRequest
+	(*UpdateQuizListResponse)(nil), // 15: quiz_arena.quiz_registry.v1.UpdateQuizListResponse
+	(*DeleteQuizListRequest)(nil),  // 16: quiz_arena.quiz_registry.v1.DeleteQuizListRequest
+	(*DeleteQuizListResponse)(nil), // 17: quiz_arena.quiz_registry.v1.DeleteQuizListResponse
+	(*ListQuizListsRequest)(nil),   // 18: quiz_arena.quiz_registry.v1.ListQuizListsRequest
+	(*ListQuizListsResponse)(nil),  // 19: quiz_arena.quiz_registry.v1.ListQuizListsResponse
+	(*AnswerOptions)(nil),          // 20: quiz_arena.quiz_registry.v1.AnswerOptions
+	(*QuizSource)(nil),             // 21: quiz_arena.quiz_registry.v1.QuizSource
+	(*Quiz)(nil),                   // 22: quiz_arena.quiz_registry.v1.Quiz
+	(*QuizList)(nil),               // 23: quiz_arena.quiz_registry.v1.QuizList
+	(*fieldmaskpb.FieldMask)(nil),  // 24: google.protobuf.FieldMask
+	(*timestamppb.Timestamp)(nil),  // 25: google.protobuf.Timestamp
+}
 var file_quiz_arena_quiz_registry_v1_quiz_registry_proto_depIdxs = []int32{
-	0, // [0:0] is the sub-list for method output_type
-	0, // [0:0] is the sub-list for method input_type
-	0, // [0:0] is the sub-list for extension type_name
-	0, // [0:0] is the sub-list for extension extendee
-	0, // [0:0] is the sub-list for field type_name
+	20, // 0: quiz_arena.quiz_registry.v1.CreateQuizRequest.answer_options:type_name -> quiz_arena.quiz_registry.v1.AnswerOptions
+	21, // 1: quiz_arena.quiz_registry.v1.CreateQuizRequest.source:type_name -> quiz_arena.quiz_registry.v1.QuizSource
+	22, // 2: quiz_arena.quiz_registry.v1.CreateQuizResponse.quiz:type_name -> quiz_arena.quiz_registry.v1.Quiz
+	24, // 3: quiz_arena.quiz_registry.v1.GetQuizRequest.read_mask:type_name -> google.protobuf.FieldMask
+	22, // 4: quiz_arena.quiz_registry.v1.GetQuizResponse.quiz:type_name -> quiz_arena.quiz_registry.v1.Quiz
+	22, // 5: quiz_arena.quiz_registry.v1.UpdateQuizRequest.quiz:type_name -> quiz_arena.quiz_registry.v1.Quiz
+	24, // 6: quiz_arena.quiz_registry.v1.UpdateQuizRequest.update_mask:type_name -> google.protobuf.FieldMask
+	22, // 7: quiz_arena.quiz_registry.v1.UpdateQuizResponse.quiz:type_name -> quiz_arena.quiz_registry.v1.Quiz
+	22, // 8: quiz_arena.quiz_registry.v1.DeleteQuizResponse.quiz:type_name -> quiz_arena.quiz_registry.v1.Quiz
+	24, // 9: quiz_arena.quiz_registry.v1.ListQuizzesRequest.read_mask:type_name -> google.protobuf.FieldMask
+	22, // 10: quiz_arena.quiz_registry.v1.ListQuizzesResponse.quizzes:type_name -> quiz_arena.quiz_registry.v1.Quiz
+	23, // 11: quiz_arena.quiz_registry.v1.CreateQuizListResponse.quiz_list:type_name -> quiz_arena.quiz_registry.v1.QuizList
+	24, // 12: quiz_arena.quiz_registry.v1.GetQuizListRequest.read_mask:type_name -> google.protobuf.FieldMask
+	23, // 13: quiz_arena.quiz_registry.v1.GetQuizListResponse.quiz_list:type_name -> quiz_arena.quiz_registry.v1.QuizList
+	23, // 14: quiz_arena.quiz_registry.v1.UpdateQuizListRequest.quiz_list:type_name -> quiz_arena.quiz_registry.v1.QuizList
+	24, // 15: quiz_arena.quiz_registry.v1.UpdateQuizListRequest.update_mask:type_name -> google.protobuf.FieldMask
+	23, // 16: quiz_arena.quiz_registry.v1.UpdateQuizListResponse.quiz_list:type_name -> quiz_arena.quiz_registry.v1.QuizList
+	23, // 17: quiz_arena.quiz_registry.v1.DeleteQuizListResponse.quiz_list:type_name -> quiz_arena.quiz_registry.v1.QuizList
+	24, // 18: quiz_arena.quiz_registry.v1.ListQuizListsRequest.read_mask:type_name -> google.protobuf.FieldMask
+	23, // 19: quiz_arena.quiz_registry.v1.ListQuizListsResponse.quiz_lists:type_name -> quiz_arena.quiz_registry.v1.QuizList
+	20, // 20: quiz_arena.quiz_registry.v1.Quiz.answer_options:type_name -> quiz_arena.quiz_registry.v1.AnswerOptions
+	21, // 21: quiz_arena.quiz_registry.v1.Quiz.source:type_name -> quiz_arena.quiz_registry.v1.QuizSource
+	25, // 22: quiz_arena.quiz_registry.v1.Quiz.created_at:type_name -> google.protobuf.Timestamp
+	25, // 23: quiz_arena.quiz_registry.v1.Quiz.updated_at:type_name -> google.protobuf.Timestamp
+	25, // 24: quiz_arena.quiz_registry.v1.QuizList.created_at:type_name -> google.protobuf.Timestamp
+	25, // 25: quiz_arena.quiz_registry.v1.QuizList.updated_at:type_name -> google.protobuf.Timestamp
+	0,  // 26: quiz_arena.quiz_registry.v1.QuizRegistryService.CreateQuiz:input_type -> quiz_arena.quiz_registry.v1.CreateQuizRequest
+	2,  // 27: quiz_arena.quiz_registry.v1.QuizRegistryService.GetQuiz:input_type -> quiz_arena.quiz_registry.v1.GetQuizRequest
+	4,  // 28: quiz_arena.quiz_registry.v1.QuizRegistryService.UpdateQuiz:input_type -> quiz_arena.quiz_registry.v1.UpdateQuizRequest
+	6,  // 29: quiz_arena.quiz_registry.v1.QuizRegistryService.DeleteQuiz:input_type -> quiz_arena.quiz_registry.v1.DeleteQuizRequest
+	8,  // 30: quiz_arena.quiz_registry.v1.QuizRegistryService.ListQuizzes:input_type -> quiz_arena.quiz_registry.v1.ListQuizzesRequest
+	10, // 31: quiz_arena.quiz_registry.v1.QuizRegistryService.CreateQuizList:input_type -> quiz_arena.quiz_registry.v1.CreateQuizListRequest
+	12, // 32: quiz_arena.quiz_registry.v1.QuizRegistryService.GetQuizList:input_type -> quiz_arena.quiz_registry.v1.GetQuizListRequest
+	14, // 33: quiz_arena.quiz_registry.v1.QuizRegistryService.UpdateQuizList:input_type -> quiz_arena.quiz_registry.v1.UpdateQuizListRequest
+	16, // 34: quiz_arena.quiz_registry.v1.QuizRegistryService.DeleteQuizList:input_type -> quiz_arena.quiz_registry.v1.DeleteQuizListRequest
+	18, // 35: quiz_arena.quiz_registry.v1.QuizRegistryService.ListQuizLists:input_type -> quiz_arena.quiz_registry.v1.ListQuizListsRequest
+	1,  // 36: quiz_arena.quiz_registry.v1.QuizRegistryService.CreateQuiz:output_type -> quiz_arena.quiz_registry.v1.CreateQuizResponse
+	3,  // 37: quiz_arena.quiz_registry.v1.QuizRegistryService.GetQuiz:output_type -> quiz_arena.quiz_registry.v1.GetQuizResponse
+	5,  // 38: quiz_arena.quiz_registry.v1.QuizRegistryService.UpdateQuiz:output_type -> quiz_arena.quiz_registry.v1.UpdateQuizResponse
+	7,  // 39: quiz_arena.quiz_registry.v1.QuizRegistryService.DeleteQuiz:output_type -> quiz_arena.quiz_registry.v1.DeleteQuizResponse
+	9,  // 40: quiz_arena.quiz_registry.v1.QuizRegistryService.ListQuizzes:output_type -> quiz_arena.quiz_registry.v1.ListQuizzesResponse
+	11, // 41: quiz_arena.quiz_registry.v1.QuizRegistryService.CreateQuizList:output_type -> quiz_arena.quiz_registry.v1.CreateQuizListResponse
+	13, // 42: quiz_arena.quiz_registry.v1.QuizRegistryService.GetQuizList:output_type -> quiz_arena.quiz_registry.v1.GetQuizListResponse
+	15, // 43: quiz_arena.quiz_registry.v1.QuizRegistryService.UpdateQuizList:output_type -> quiz_arena.quiz_registry.v1.UpdateQuizListResponse
+	17, // 44: quiz_arena.quiz_registry.v1.QuizRegistryService.DeleteQuizList:output_type -> quiz_arena.quiz_registry.v1.DeleteQuizListResponse
+	19, // 45: quiz_arena.quiz_registry.v1.QuizRegistryService.ListQuizLists:output_type -> quiz_arena.quiz_registry.v1.ListQuizListsResponse
+	36, // [36:46] is the sub-list for method output_type
+	26, // [26:36] is the sub-list for method input_type
+	26, // [26:26] is the sub-list for extension type_name
+	26, // [26:26] is the sub-list for extension extendee
+	0,  // [0:26] is the sub-list for field type_name
 }
 
 func init() { file_quiz_arena_quiz_registry_v1_quiz_registry_proto_init() }
@@ -42,18 +1705,27 @@ func file_quiz_arena_quiz_registry_v1_quiz_registry_proto_init() {
 	if File_quiz_arena_quiz_registry_v1_quiz_registry_proto != nil {
 		return
 	}
+	file_quiz_arena_quiz_registry_v1_quiz_registry_proto_msgTypes[0].OneofWrappers = []any{}
+	file_quiz_arena_quiz_registry_v1_quiz_registry_proto_msgTypes[2].OneofWrappers = []any{}
+	file_quiz_arena_quiz_registry_v1_quiz_registry_proto_msgTypes[8].OneofWrappers = []any{}
+	file_quiz_arena_quiz_registry_v1_quiz_registry_proto_msgTypes[10].OneofWrappers = []any{}
+	file_quiz_arena_quiz_registry_v1_quiz_registry_proto_msgTypes[12].OneofWrappers = []any{}
+	file_quiz_arena_quiz_registry_v1_quiz_registry_proto_msgTypes[18].OneofWrappers = []any{}
+	file_quiz_arena_quiz_registry_v1_quiz_registry_proto_msgTypes[21].OneofWrappers = []any{}
+	file_quiz_arena_quiz_registry_v1_quiz_registry_proto_msgTypes[22].OneofWrappers = []any{}
 	type x struct{}
 	out := protoimpl.TypeBuilder{
 		File: protoimpl.DescBuilder{
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
 			RawDescriptor: unsafe.Slice(unsafe.StringData(file_quiz_arena_quiz_registry_v1_quiz_registry_proto_rawDesc), len(file_quiz_arena_quiz_registry_v1_quiz_registry_proto_rawDesc)),
 			NumEnums:      0,
-			NumMessages:   0,
+			NumMessages:   24,
 			NumExtensions: 0,
 			NumServices:   1,
 		},
 		GoTypes:           file_quiz_arena_quiz_registry_v1_quiz_registry_proto_goTypes,
 		DependencyIndexes: file_quiz_arena_quiz_registry_v1_quiz_registry_proto_depIdxs,
+		MessageInfos:      file_quiz_arena_quiz_registry_v1_quiz_registry_proto_msgTypes,
 	}.Build()
 	File_quiz_arena_quiz_registry_v1_quiz_registry_proto = out.File
 	file_quiz_arena_quiz_registry_v1_quiz_registry_proto_goTypes = nil

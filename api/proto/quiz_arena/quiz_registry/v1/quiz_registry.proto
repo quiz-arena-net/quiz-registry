@@ -2,4 +2,215 @@ syntax = "proto3";
 
 package quiz_arena.quiz_registry.v1;
 
-service QuizRegistryService {}
+import "google/protobuf/field_mask.proto";
+import "google/protobuf/timestamp.proto";
+
+// Authentication: use Authorization metadata (e.g., Bearer <token>).
+
+service QuizRegistryService {
+  // Quiz CRUD
+  rpc CreateQuiz(CreateQuizRequest) returns (CreateQuizResponse);
+  rpc GetQuiz(GetQuizRequest) returns (GetQuizResponse);
+  rpc UpdateQuiz(UpdateQuizRequest) returns (UpdateQuizResponse);
+  rpc DeleteQuiz(DeleteQuizRequest) returns (DeleteQuizResponse);
+  rpc ListQuizzes(ListQuizzesRequest) returns (ListQuizzesResponse);
+
+  // QuizList CRUD
+  rpc CreateQuizList(CreateQuizListRequest) returns (CreateQuizListResponse);
+  rpc GetQuizList(GetQuizListRequest) returns (GetQuizListResponse);
+  rpc UpdateQuizList(UpdateQuizListRequest) returns (UpdateQuizListResponse);
+  rpc DeleteQuizList(DeleteQuizListRequest) returns (DeleteQuizListResponse);
+  rpc ListQuizLists(ListQuizListsRequest) returns (ListQuizListsResponse);
+}
+
+/* ===========================
+   Requests and Responses
+   =========================== */
+
+// ---- Quiz ----
+
+message CreateQuizRequest {
+  // Parent list that will own the quiz.
+  string list_id = 1;
+
+  // Content
+  string question = 2;
+  string answer = 3;
+  repeated AnswerOptions answer_options = 4;
+  repeated string tags = 5;
+
+  // Optional metadata
+  optional QuizSource source = 6;
+}
+
+message CreateQuizResponse {
+  Quiz quiz = 1;
+}
+
+message GetQuizRequest {
+  string id = 1;
+  // Optional field mask to specify which fields to return.
+  // If unset or empty, the server returns all fields.
+  optional google.protobuf.FieldMask read_mask = 2;
+}
+
+message GetQuizResponse {
+  Quiz quiz = 1;
+}
+
+message UpdateQuizRequest {
+  // The quiz to update. Only fields in update_mask are applied.
+  Quiz quiz = 1;
+
+  // Required. Paths relative to Quiz. Example:
+  // "question,answer,answer_options,tags,title,description,source"
+  // Certain fields (e.g. `id`, `created_at`, `updated_at`) must not be included
+  // and will be rejected if set.
+  google.protobuf.FieldMask update_mask = 2;
+}
+
+message UpdateQuizResponse {
+  Quiz quiz = 1;
+}
+
+message DeleteQuizRequest {
+  string id = 1;
+}
+
+message DeleteQuizResponse {
+  Quiz quiz = 1;
+}
+
+message ListQuizzesRequest {
+  // Filter scope
+  optional string list_id = 1; // limit to a list
+  optional string author_id = 2; // limit to author
+
+  // Text filter (implementation-defined, e.g., tags:foo AND "substring")
+  optional string filter = 3;
+
+  // Sorting (implementation-defined, e.g., "created_at desc")
+  optional string order_by = 4;
+
+  optional google.protobuf.FieldMask read_mask = 5;
+
+  // Pagination
+  int32 page_size = 6; // default chosen by server
+  string page_token = 7;
+}
+
+message ListQuizzesResponse {
+  repeated Quiz quizzes = 1;
+  string next_page_token = 2;
+}
+
+// ---- QuizList ----
+
+message CreateQuizListRequest {
+  // Minimal fields to create a list.
+  string title = 1;
+  optional string description = 2;
+  optional string language = 3;
+  repeated string tags = 4;
+}
+
+message CreateQuizListResponse {
+  QuizList quiz_list = 1;
+}
+
+message GetQuizListRequest {
+  string id = 1;
+  // Optional field mask to specify which fields to return.
+  // If unset or empty, the server returns all fields.
+  optional google.protobuf.FieldMask read_mask = 2;
+}
+
+message GetQuizListResponse {
+  QuizList quiz_list = 1;
+}
+
+message UpdateQuizListRequest {
+  QuizList quiz_list = 1;
+  google.protobuf.FieldMask update_mask = 2;
+}
+
+message UpdateQuizListResponse {
+  QuizList quiz_list = 1;
+}
+
+message DeleteQuizListRequest {
+  string id = 1;
+}
+
+message DeleteQuizListResponse {
+  QuizList quiz_list = 1;
+}
+
+message ListQuizListsRequest {
+  // Scope and filtering
+  optional string owner_id = 1;
+  optional string filter = 2;
+  optional string order_by = 3;
+
+  optional google.protobuf.FieldMask read_mask = 5;
+
+  // Pagination
+  int32 page_size = 6;
+  string page_token = 7;
+}
+
+message ListQuizListsResponse {
+  repeated QuizList quiz_lists = 1;
+  string next_page_token = 2;
+}
+
+/* ===========================
+   Resource Messages
+   =========================== */
+
+message AnswerOptions {
+  // one correct and several wrong choices.
+  // Keep strings literal to allow non-indexed correctness.
+  string correct_option = 1;
+  repeated string wrong_options = 2;
+}
+
+message QuizSource {
+  string name = 1;
+  optional string url = 2;
+}
+
+message Quiz {
+  // Identity
+  string id = 1;
+  string list_id = 2;
+  string author_id = 3;
+
+  // Content
+  string question = 4;
+  string answer = 5;
+  repeated AnswerOptions answer_options = 6;
+  repeated string tags = 7;
+  optional QuizSource source = 8;
+
+  // Timestamps
+  google.protobuf.Timestamp created_at = 9;
+  google.protobuf.Timestamp updated_at = 10;
+}
+
+message QuizList {
+  // Identity
+  string id = 1;
+  string owner_id = 2;
+
+  // Content
+  string title = 3;
+  string description = 4;
+  string language = 5;
+  int32 quiz_count = 6;
+  repeated string tags = 7;
+
+  // Timestamps
+  google.protobuf.Timestamp created_at = 8;
+  google.protobuf.Timestamp updated_at = 9;
+}

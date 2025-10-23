@@ -6,8 +6,11 @@ package quiz_registryv1connect
 
 import (
 	connect "connectrpc.com/connect"
-	_ "github.com/quiz-arena-net/quiz-registry/gen/quiz_arena/quiz_registry/v1"
+	context "context"
+	errors "errors"
+	v1 "github.com/quiz-arena-net/quiz-registry/gen/quiz_arena/quiz_registry/v1"
 	http "net/http"
+	strings "strings"
 )
 
 // This is a compile-time assertion to ensure that this generated file and the connect package are
@@ -22,9 +25,61 @@ const (
 	QuizRegistryServiceName = "quiz_arena.quiz_registry.v1.QuizRegistryService"
 )
 
+// These constants are the fully-qualified names of the RPCs defined in this package. They're
+// exposed at runtime as Spec.Procedure and as the final two segments of the HTTP route.
+//
+// Note that these are different from the fully-qualified method names used by
+// google.golang.org/protobuf/reflect/protoreflect. To convert from these constants to
+// reflection-formatted method names, remove the leading slash and convert the remaining slash to a
+// period.
+const (
+	// QuizRegistryServiceCreateQuizProcedure is the fully-qualified name of the QuizRegistryService's
+	// CreateQuiz RPC.
+	QuizRegistryServiceCreateQuizProcedure = "/quiz_arena.quiz_registry.v1.QuizRegistryService/CreateQuiz"
+	// QuizRegistryServiceGetQuizProcedure is the fully-qualified name of the QuizRegistryService's
+	// GetQuiz RPC.
+	QuizRegistryServiceGetQuizProcedure = "/quiz_arena.quiz_registry.v1.QuizRegistryService/GetQuiz"
+	// QuizRegistryServiceUpdateQuizProcedure is the fully-qualified name of the QuizRegistryService's
+	// UpdateQuiz RPC.
+	QuizRegistryServiceUpdateQuizProcedure = "/quiz_arena.quiz_registry.v1.QuizRegistryService/UpdateQuiz"
+	// QuizRegistryServiceDeleteQuizProcedure is the fully-qualified name of the QuizRegistryService's
+	// DeleteQuiz RPC.
+	QuizRegistryServiceDeleteQuizProcedure = "/quiz_arena.quiz_registry.v1.QuizRegistryService/DeleteQuiz"
+	// QuizRegistryServiceListQuizzesProcedure is the fully-qualified name of the QuizRegistryService's
+	// ListQuizzes RPC.
+	QuizRegistryServiceListQuizzesProcedure = "/quiz_arena.quiz_registry.v1.QuizRegistryService/ListQuizzes"
+	// QuizRegistryServiceCreateQuizListProcedure is the fully-qualified name of the
+	// QuizRegistryService's CreateQuizList RPC.
+	QuizRegistryServiceCreateQuizListProcedure = "/quiz_arena.quiz_registry.v1.QuizRegistryService/CreateQuizList"
+	// QuizRegistryServiceGetQuizListProcedure is the fully-qualified name of the QuizRegistryService's
+	// GetQuizList RPC.
+	QuizRegistryServiceGetQuizListProcedure = "/quiz_arena.quiz_registry.v1.QuizRegistryService/GetQuizList"
+	// QuizRegistryServiceUpdateQuizListProcedure is the fully-qualified name of the
+	// QuizRegistryService's UpdateQuizList RPC.
+	QuizRegistryServiceUpdateQuizListProcedure = "/quiz_arena.quiz_registry.v1.QuizRegistryService/UpdateQuizList"
+	// QuizRegistryServiceDeleteQuizListProcedure is the fully-qualified name of the
+	// QuizRegistryService's DeleteQuizList RPC.
+	QuizRegistryServiceDeleteQuizListProcedure = "/quiz_arena.quiz_registry.v1.QuizRegistryService/DeleteQuizList"
+	// QuizRegistryServiceListQuizListsProcedure is the fully-qualified name of the
+	// QuizRegistryService's ListQuizLists RPC.
+	QuizRegistryServiceListQuizListsProcedure = "/quiz_arena.quiz_registry.v1.QuizRegistryService/ListQuizLists"
+)
+
 // QuizRegistryServiceClient is a client for the quiz_arena.quiz_registry.v1.QuizRegistryService
 // service.
 type QuizRegistryServiceClient interface {
+	// Quiz CRUD
+	CreateQuiz(context.Context, *connect.Request[v1.CreateQuizRequest]) (*connect.Response[v1.CreateQuizResponse], error)
+	GetQuiz(context.Context, *connect.Request[v1.GetQuizRequest]) (*connect.Response[v1.GetQuizResponse], error)
+	UpdateQuiz(context.Context, *connect.Request[v1.UpdateQuizRequest]) (*connect.Response[v1.UpdateQuizResponse], error)
+	DeleteQuiz(context.Context, *connect.Request[v1.DeleteQuizRequest]) (*connect.Response[v1.DeleteQuizResponse], error)
+	ListQuizzes(context.Context, *connect.Request[v1.ListQuizzesRequest]) (*connect.Response[v1.ListQuizzesResponse], error)
+	// QuizList CRUD
+	CreateQuizList(context.Context, *connect.Request[v1.CreateQuizListRequest]) (*connect.Response[v1.CreateQuizListResponse], error)
+	GetQuizList(context.Context, *connect.Request[v1.GetQuizListRequest]) (*connect.Response[v1.GetQuizListResponse], error)
+	UpdateQuizList(context.Context, *connect.Request[v1.UpdateQuizListRequest]) (*connect.Response[v1.UpdateQuizListResponse], error)
+	DeleteQuizList(context.Context, *connect.Request[v1.DeleteQuizListRequest]) (*connect.Response[v1.DeleteQuizListResponse], error)
+	ListQuizLists(context.Context, *connect.Request[v1.ListQuizListsRequest]) (*connect.Response[v1.ListQuizListsResponse], error)
 }
 
 // NewQuizRegistryServiceClient constructs a client for the
@@ -36,16 +91,151 @@ type QuizRegistryServiceClient interface {
 // The URL supplied here should be the base URL for the Connect or gRPC server (for example,
 // http://api.acme.com or https://acme.com/grpc).
 func NewQuizRegistryServiceClient(httpClient connect.HTTPClient, baseURL string, opts ...connect.ClientOption) QuizRegistryServiceClient {
-	return &quizRegistryServiceClient{}
+	baseURL = strings.TrimRight(baseURL, "/")
+	quizRegistryServiceMethods := v1.File_quiz_arena_quiz_registry_v1_quiz_registry_proto.Services().ByName("QuizRegistryService").Methods()
+	return &quizRegistryServiceClient{
+		createQuiz: connect.NewClient[v1.CreateQuizRequest, v1.CreateQuizResponse](
+			httpClient,
+			baseURL+QuizRegistryServiceCreateQuizProcedure,
+			connect.WithSchema(quizRegistryServiceMethods.ByName("CreateQuiz")),
+			connect.WithClientOptions(opts...),
+		),
+		getQuiz: connect.NewClient[v1.GetQuizRequest, v1.GetQuizResponse](
+			httpClient,
+			baseURL+QuizRegistryServiceGetQuizProcedure,
+			connect.WithSchema(quizRegistryServiceMethods.ByName("GetQuiz")),
+			connect.WithClientOptions(opts...),
+		),
+		updateQuiz: connect.NewClient[v1.UpdateQuizRequest, v1.UpdateQuizResponse](
+			httpClient,
+			baseURL+QuizRegistryServiceUpdateQuizProcedure,
+			connect.WithSchema(quizRegistryServiceMethods.ByName("UpdateQuiz")),
+			connect.WithClientOptions(opts...),
+		),
+		deleteQuiz: connect.NewClient[v1.DeleteQuizRequest, v1.DeleteQuizResponse](
+			httpClient,
+			baseURL+QuizRegistryServiceDeleteQuizProcedure,
+			connect.WithSchema(quizRegistryServiceMethods.ByName("DeleteQuiz")),
+			connect.WithClientOptions(opts...),
+		),
+		listQuizzes: connect.NewClient[v1.ListQuizzesRequest, v1.ListQuizzesResponse](
+			httpClient,
+			baseURL+QuizRegistryServiceListQuizzesProcedure,
+			connect.WithSchema(quizRegistryServiceMethods.ByName("ListQuizzes")),
+			connect.WithClientOptions(opts...),
+		),
+		createQuizList: connect.NewClient[v1.CreateQuizListRequest, v1.CreateQuizListResponse](
+			httpClient,
+			baseURL+QuizRegistryServiceCreateQuizListProcedure,
+			connect.WithSchema(quizRegistryServiceMethods.ByName("CreateQuizList")),
+			connect.WithClientOptions(opts...),
+		),
+		getQuizList: connect.NewClient[v1.GetQuizListRequest, v1.GetQuizListResponse](
+			httpClient,
+			baseURL+QuizRegistryServiceGetQuizListProcedure,
+			connect.WithSchema(quizRegistryServiceMethods.ByName("GetQuizList")),
+			connect.WithClientOptions(opts...),
+		),
+		updateQuizList: connect.NewClient[v1.UpdateQuizListRequest, v1.UpdateQuizListResponse](
+			httpClient,
+			baseURL+QuizRegistryServiceUpdateQuizListProcedure,
+			connect.WithSchema(quizRegistryServiceMethods.ByName("UpdateQuizList")),
+			connect.WithClientOptions(opts...),
+		),
+		deleteQuizList: connect.NewClient[v1.DeleteQuizListRequest, v1.DeleteQuizListResponse](
+			httpClient,
+			baseURL+QuizRegistryServiceDeleteQuizListProcedure,
+			connect.WithSchema(quizRegistryServiceMethods.ByName("DeleteQuizList")),
+			connect.WithClientOptions(opts...),
+		),
+		listQuizLists: connect.NewClient[v1.ListQuizListsRequest, v1.ListQuizListsResponse](
+			httpClient,
+			baseURL+QuizRegistryServiceListQuizListsProcedure,
+			connect.WithSchema(quizRegistryServiceMethods.ByName("ListQuizLists")),
+			connect.WithClientOptions(opts...),
+		),
+	}
 }
 
 // quizRegistryServiceClient implements QuizRegistryServiceClient.
 type quizRegistryServiceClient struct {
+	createQuiz     *connect.Client[v1.CreateQuizRequest, v1.CreateQuizResponse]
+	getQuiz        *connect.Client[v1.GetQuizRequest, v1.GetQuizResponse]
+	updateQuiz     *connect.Client[v1.UpdateQuizRequest, v1.UpdateQuizResponse]
+	deleteQuiz     *connect.Client[v1.DeleteQuizRequest, v1.DeleteQuizResponse]
+	listQuizzes    *connect.Client[v1.ListQuizzesRequest, v1.ListQuizzesResponse]
+	createQuizList *connect.Client[v1.CreateQuizListRequest, v1.CreateQuizListResponse]
+	getQuizList    *connect.Client[v1.GetQuizListRequest, v1.GetQuizListResponse]
+	updateQuizList *connect.Client[v1.UpdateQuizListRequest, v1.UpdateQuizListResponse]
+	deleteQuizList *connect.Client[v1.DeleteQuizListRequest, v1.DeleteQuizListResponse]
+	listQuizLists  *connect.Client[v1.ListQuizListsRequest, v1.ListQuizListsResponse]
+}
+
+// CreateQuiz calls quiz_arena.quiz_registry.v1.QuizRegistryService.CreateQuiz.
+func (c *quizRegistryServiceClient) CreateQuiz(ctx context.Context, req *connect.Request[v1.CreateQuizRequest]) (*connect.Response[v1.CreateQuizResponse], error) {
+	return c.createQuiz.CallUnary(ctx, req)
+}
+
+// GetQuiz calls quiz_arena.quiz_registry.v1.QuizRegistryService.GetQuiz.
+func (c *quizRegistryServiceClient) GetQuiz(ctx context.Context, req *connect.Request[v1.GetQuizRequest]) (*connect.Response[v1.GetQuizResponse], error) {
+	return c.getQuiz.CallUnary(ctx, req)
+}
+
+// UpdateQuiz calls quiz_arena.quiz_registry.v1.QuizRegistryService.UpdateQuiz.
+func (c *quizRegistryServiceClient) UpdateQuiz(ctx context.Context, req *connect.Request[v1.UpdateQuizRequest]) (*connect.Response[v1.UpdateQuizResponse], error) {
+	return c.updateQuiz.CallUnary(ctx, req)
+}
+
+// DeleteQuiz calls quiz_arena.quiz_registry.v1.QuizRegistryService.DeleteQuiz.
+func (c *quizRegistryServiceClient) DeleteQuiz(ctx context.Context, req *connect.Request[v1.DeleteQuizRequest]) (*connect.Response[v1.DeleteQuizResponse], error) {
+	return c.deleteQuiz.CallUnary(ctx, req)
+}
+
+// ListQuizzes calls quiz_arena.quiz_registry.v1.QuizRegistryService.ListQuizzes.
+func (c *quizRegistryServiceClient) ListQuizzes(ctx context.Context, req *connect.Request[v1.ListQuizzesRequest]) (*connect.Response[v1.ListQuizzesResponse], error) {
+	return c.listQuizzes.CallUnary(ctx, req)
+}
+
+// CreateQuizList calls quiz_arena.quiz_registry.v1.QuizRegistryService.CreateQuizList.
+func (c *quizRegistryServiceClient) CreateQuizList(ctx context.Context, req *connect.Request[v1.CreateQuizListRequest]) (*connect.Response[v1.CreateQuizListResponse], error) {
+	return c.createQuizList.CallUnary(ctx, req)
+}
+
+// GetQuizList calls quiz_arena.quiz_registry.v1.QuizRegistryService.GetQuizList.
+func (c *quizRegistryServiceClient) GetQuizList(ctx context.Context, req *connect.Request[v1.GetQuizListRequest]) (*connect.Response[v1.GetQuizListResponse], error) {
+	return c.getQuizList.CallUnary(ctx, req)
+}
+
+// UpdateQuizList calls quiz_arena.quiz_registry.v1.QuizRegistryService.UpdateQuizList.
+func (c *quizRegistryServiceClient) UpdateQuizList(ctx context.Context, req *connect.Request[v1.UpdateQuizListRequest]) (*connect.Response[v1.UpdateQuizListResponse], error) {
+	return c.updateQuizList.CallUnary(ctx, req)
+}
+
+// DeleteQuizList calls quiz_arena.quiz_registry.v1.QuizRegistryService.DeleteQuizList.
+func (c *quizRegistryServiceClient) DeleteQuizList(ctx context.Context, req *connect.Request[v1.DeleteQuizListRequest]) (*connect.Response[v1.DeleteQuizListResponse], error) {
+	return c.deleteQuizList.CallUnary(ctx, req)
+}
+
+// ListQuizLists calls quiz_arena.quiz_registry.v1.QuizRegistryService.ListQuizLists.
+func (c *quizRegistryServiceClient) ListQuizLists(ctx context.Context, req *connect.Request[v1.ListQuizListsRequest]) (*connect.Response[v1.ListQuizListsResponse], error) {
+	return c.listQuizLists.CallUnary(ctx, req)
 }
 
 // QuizRegistryServiceHandler is an implementation of the
 // quiz_arena.quiz_registry.v1.QuizRegistryService service.
 type QuizRegistryServiceHandler interface {
+	// Quiz CRUD
+	CreateQuiz(context.Context, *connect.Request[v1.CreateQuizRequest]) (*connect.Response[v1.CreateQuizResponse], error)
+	GetQuiz(context.Context, *connect.Request[v1.GetQuizRequest]) (*connect.Response[v1.GetQuizResponse], error)
+	UpdateQuiz(context.Context, *connect.Request[v1.UpdateQuizRequest]) (*connect.Response[v1.UpdateQuizResponse], error)
+	DeleteQuiz(context.Context, *connect.Request[v1.DeleteQuizRequest]) (*connect.Response[v1.DeleteQuizResponse], error)
+	ListQuizzes(context.Context, *connect.Request[v1.ListQuizzesRequest]) (*connect.Response[v1.ListQuizzesResponse], error)
+	// QuizList CRUD
+	CreateQuizList(context.Context, *connect.Request[v1.CreateQuizListRequest]) (*connect.Response[v1.CreateQuizListResponse], error)
+	GetQuizList(context.Context, *connect.Request[v1.GetQuizListRequest]) (*connect.Response[v1.GetQuizListResponse], error)
+	UpdateQuizList(context.Context, *connect.Request[v1.UpdateQuizListRequest]) (*connect.Response[v1.UpdateQuizListResponse], error)
+	DeleteQuizList(context.Context, *connect.Request[v1.DeleteQuizListRequest]) (*connect.Response[v1.DeleteQuizListResponse], error)
+	ListQuizLists(context.Context, *connect.Request[v1.ListQuizListsRequest]) (*connect.Response[v1.ListQuizListsResponse], error)
 }
 
 // NewQuizRegistryServiceHandler builds an HTTP handler from the service implementation. It returns
@@ -54,8 +244,89 @@ type QuizRegistryServiceHandler interface {
 // By default, handlers support the Connect, gRPC, and gRPC-Web protocols with the binary Protobuf
 // and JSON codecs. They also support gzip compression.
 func NewQuizRegistryServiceHandler(svc QuizRegistryServiceHandler, opts ...connect.HandlerOption) (string, http.Handler) {
+	quizRegistryServiceMethods := v1.File_quiz_arena_quiz_registry_v1_quiz_registry_proto.Services().ByName("QuizRegistryService").Methods()
+	quizRegistryServiceCreateQuizHandler := connect.NewUnaryHandler(
+		QuizRegistryServiceCreateQuizProcedure,
+		svc.CreateQuiz,
+		connect.WithSchema(quizRegistryServiceMethods.ByName("CreateQuiz")),
+		connect.WithHandlerOptions(opts...),
+	)
+	quizRegistryServiceGetQuizHandler := connect.NewUnaryHandler(
+		QuizRegistryServiceGetQuizProcedure,
+		svc.GetQuiz,
+		connect.WithSchema(quizRegistryServiceMethods.ByName("GetQuiz")),
+		connect.WithHandlerOptions(opts...),
+	)
+	quizRegistryServiceUpdateQuizHandler := connect.NewUnaryHandler(
+		QuizRegistryServiceUpdateQuizProcedure,
+		svc.UpdateQuiz,
+		connect.WithSchema(quizRegistryServiceMethods.ByName("UpdateQuiz")),
+		connect.WithHandlerOptions(opts...),
+	)
+	quizRegistryServiceDeleteQuizHandler := connect.NewUnaryHandler(
+		QuizRegistryServiceDeleteQuizProcedure,
+		svc.DeleteQuiz,
+		connect.WithSchema(quizRegistryServiceMethods.ByName("DeleteQuiz")),
+		connect.WithHandlerOptions(opts...),
+	)
+	quizRegistryServiceListQuizzesHandler := connect.NewUnaryHandler(
+		QuizRegistryServiceListQuizzesProcedure,
+		svc.ListQuizzes,
+		connect.WithSchema(quizRegistryServiceMethods.ByName("ListQuizzes")),
+		connect.WithHandlerOptions(opts...),
+	)
+	quizRegistryServiceCreateQuizListHandler := connect.NewUnaryHandler(
+		QuizRegistryServiceCreateQuizListProcedure,
+		svc.CreateQuizList,
+		connect.WithSchema(quizRegistryServiceMethods.ByName("CreateQuizList")),
+		connect.WithHandlerOptions(opts...),
+	)
+	quizRegistryServiceGetQuizListHandler := connect.NewUnaryHandler(
+		QuizRegistryServiceGetQuizListProcedure,
+		svc.GetQuizList,
+		connect.WithSchema(quizRegistryServiceMethods.ByName("GetQuizList")),
+		connect.WithHandlerOptions(opts...),
+	)
+	quizRegistryServiceUpdateQuizListHandler := connect.NewUnaryHandler(
+		QuizRegistryServiceUpdateQuizListProcedure,
+		svc.UpdateQuizList,
+		connect.WithSchema(quizRegistryServiceMethods.ByName("UpdateQuizList")),
+		connect.WithHandlerOptions(opts...),
+	)
+	quizRegistryServiceDeleteQuizListHandler := connect.NewUnaryHandler(
+		QuizRegistryServiceDeleteQuizListProcedure,
+		svc.DeleteQuizList,
+		connect.WithSchema(quizRegistryServiceMethods.ByName("DeleteQuizList")),
+		connect.WithHandlerOptions(opts...),
+	)
+	quizRegistryServiceListQuizListsHandler := connect.NewUnaryHandler(
+		QuizRegistryServiceListQuizListsProcedure,
+		svc.ListQuizLists,
+		connect.WithSchema(quizRegistryServiceMethods.ByName("ListQuizLists")),
+		connect.WithHandlerOptions(opts...),
+	)
 	return "/quiz_arena.quiz_registry.v1.QuizRegistryService/", http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		switch r.URL.Path {
+		case QuizRegistryServiceCreateQuizProcedure:
+			quizRegistryServiceCreateQuizHandler.ServeHTTP(w, r)
+		case QuizRegistryServiceGetQuizProcedure:
+			quizRegistryServiceGetQuizHandler.ServeHTTP(w, r)
+		case QuizRegistryServiceUpdateQuizProcedure:
+			quizRegistryServiceUpdateQuizHandler.ServeHTTP(w, r)
+		case QuizRegistryServiceDeleteQuizProcedure:
+			quizRegistryServiceDeleteQuizHandler.ServeHTTP(w, r)
+		case QuizRegistryServiceListQuizzesProcedure:
+			quizRegistryServiceListQuizzesHandler.ServeHTTP(w, r)
+		case QuizRegistryServiceCreateQuizListProcedure:
+			quizRegistryServiceCreateQuizListHandler.ServeHTTP(w, r)
+		case QuizRegistryServiceGetQuizListProcedure:
+			quizRegistryServiceGetQuizListHandler.ServeHTTP(w, r)
+		case QuizRegistryServiceUpdateQuizListProcedure:
+			quizRegistryServiceUpdateQuizListHandler.ServeHTTP(w, r)
+		case QuizRegistryServiceDeleteQuizListProcedure:
+			quizRegistryServiceDeleteQuizListHandler.ServeHTTP(w, r)
+		case QuizRegistryServiceListQuizListsProcedure:
+			quizRegistryServiceListQuizListsHandler.ServeHTTP(w, r)
 		default:
 			http.NotFound(w, r)
 		}
@@ -64,3 +335,43 @@ func NewQuizRegistryServiceHandler(svc QuizRegistryServiceHandler, opts ...conne
 
 // UnimplementedQuizRegistryServiceHandler returns CodeUnimplemented from all methods.
 type UnimplementedQuizRegistryServiceHandler struct{}
+
+func (UnimplementedQuizRegistryServiceHandler) CreateQuiz(context.Context, *connect.Request[v1.CreateQuizRequest]) (*connect.Response[v1.CreateQuizResponse], error) {
+	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("quiz_arena.quiz_registry.v1.QuizRegistryService.CreateQuiz is not implemented"))
+}
+
+func (UnimplementedQuizRegistryServiceHandler) GetQuiz(context.Context, *connect.Request[v1.GetQuizRequest]) (*connect.Response[v1.GetQuizResponse], error) {
+	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("quiz_arena.quiz_registry.v1.QuizRegistryService.GetQuiz is not implemented"))
+}
+
+func (UnimplementedQuizRegistryServiceHandler) UpdateQuiz(context.Context, *connect.Request[v1.UpdateQuizRequest]) (*connect.Response[v1.UpdateQuizResponse], error) {
+	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("quiz_arena.quiz_registry.v1.QuizRegistryService.UpdateQuiz is not implemented"))
+}
+
+func (UnimplementedQuizRegistryServiceHandler) DeleteQuiz(context.Context, *connect.Request[v1.DeleteQuizRequest]) (*connect.Response[v1.DeleteQuizResponse], error) {
+	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("quiz_arena.quiz_registry.v1.QuizRegistryService.DeleteQuiz is not implemented"))
+}
+
+func (UnimplementedQuizRegistryServiceHandler) ListQuizzes(context.Context, *connect.Request[v1.ListQuizzesRequest]) (*connect.Response[v1.ListQuizzesResponse], error) {
+	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("quiz_arena.quiz_registry.v1.QuizRegistryService.ListQuizzes is not implemented"))
+}
+
+func (UnimplementedQuizRegistryServiceHandler) CreateQuizList(context.Context, *connect.Request[v1.CreateQuizListRequest]) (*connect.Response[v1.CreateQuizListResponse], error) {
+	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("quiz_arena.quiz_registry.v1.QuizRegistryService.CreateQuizList is not implemented"))
+}
+
+func (UnimplementedQuizRegistryServiceHandler) GetQuizList(context.Context, *connect.Request[v1.GetQuizListRequest]) (*connect.Response[v1.GetQuizListResponse], error) {
+	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("quiz_arena.quiz_registry.v1.QuizRegistryService.GetQuizList is not implemented"))
+}
+
+func (UnimplementedQuizRegistryServiceHandler) UpdateQuizList(context.Context, *connect.Request[v1.UpdateQuizListRequest]) (*connect.Response[v1.UpdateQuizListResponse], error) {
+	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("quiz_arena.quiz_registry.v1.QuizRegistryService.UpdateQuizList is not implemented"))
+}
+
+func (UnimplementedQuizRegistryServiceHandler) DeleteQuizList(context.Context, *connect.Request[v1.DeleteQuizListRequest]) (*connect.Response[v1.DeleteQuizListResponse], error) {
+	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("quiz_arena.quiz_registry.v1.QuizRegistryService.DeleteQuizList is not implemented"))
+}
+
+func (UnimplementedQuizRegistryServiceHandler) ListQuizLists(context.Context, *connect.Request[v1.ListQuizListsRequest]) (*connect.Response[v1.ListQuizListsResponse], error) {
+	return nil, connect.NewError(connect.CodeUnimplemented, errors.New("quiz_arena.quiz_registry.v1.QuizRegistryService.ListQuizLists is not implemented"))
+}
