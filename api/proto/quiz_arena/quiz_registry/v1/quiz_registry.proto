@@ -110,7 +110,7 @@ message CreateQuizListRequest {
   // Minimal fields to create a list.
   string title = 1;
   optional string description = 2;
-  optional string language = 3;
+  string language = 3;
   repeated string tags = 4;
 }
 
