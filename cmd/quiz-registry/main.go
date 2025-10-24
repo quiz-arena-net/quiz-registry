@@ -36,11 +36,10 @@ func main() {
 	addr := ":50051"
 
 	slog.Info("starting server", "addr", addr)
-	err := http.ListenAndServe(
+	if err := http.ListenAndServe(
 		addr,
 		h2c.NewHandler(mux, &http2.Server{}),
-	)
-	if err != nil {
+	); err != nil {
 		slog.Error("listen and serve failed", "err", err)
 		os.Exit(1)
 	}
