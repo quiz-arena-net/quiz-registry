@@ -593,7 +593,7 @@ type CreateQuizListRequest struct {
 	state protoimpl.MessageState `protogen:"open.v1"`
 	// Minimal fields to create a list.
 	Title         string   `protobuf:"bytes,1,opt,name=title,proto3" json:"title,omitempty"`
-	Description   *string  `protobuf:"bytes,2,opt,name=description,proto3,oneof" json:"description,omitempty"`
+	Description   string   `protobuf:"bytes,2,opt,name=description,proto3" json:"description,omitempty"`
 	Language      string   `protobuf:"bytes,3,opt,name=language,proto3" json:"language,omitempty"`
 	Tags          []string `protobuf:"bytes,4,rep,name=tags,proto3" json:"tags,omitempty"`
 	unknownFields protoimpl.UnknownFields
@@ -638,8 +638,8 @@ func (x *CreateQuizListRequest) GetTitle() string {
 }
 
 func (x *CreateQuizListRequest) GetDescription() string {
-	if x != nil && x.Description != nil {
-		return *x.Description
+	if x != nil {
+		return x.Description
 	}
 	return ""
 }
@@ -1509,13 +1509,12 @@ const file_quiz_arena_quiz_registry_v1_quiz_registry_proto_rawDesc = "" +
 	"_read_mask\"z\n" +
 	"\x13ListQuizzesResponse\x12;\n" +
 	"\aquizzes\x18\x01 \x03(\v2!.quiz_arena.quiz_registry.v1.QuizR\aquizzes\x12&\n" +
-	"\x0fnext_page_token\x18\x02 \x01(\tR\rnextPageToken\"\x94\x01\n" +
+	"\x0fnext_page_token\x18\x02 \x01(\tR\rnextPageToken\"\x7f\n" +
 	"\x15CreateQuizListRequest\x12\x14\n" +
-	"\x05title\x18\x01 \x01(\tR\x05title\x12%\n" +
-	"\vdescription\x18\x02 \x01(\tH\x00R\vdescription\x88\x01\x01\x12\x1a\n" +
+	"\x05title\x18\x01 \x01(\tR\x05title\x12 \n" +
+	"\vdescription\x18\x02 \x01(\tR\vdescription\x12\x1a\n" +
 	"\blanguage\x18\x03 \x01(\tR\blanguage\x12\x12\n" +
-	"\x04tags\x18\x04 \x03(\tR\x04tagsB\x0e\n" +
-	"\f_description\"\\\n" +
+	"\x04tags\x18\x04 \x03(\tR\x04tags\"\\\n" +
 	"\x16CreateQuizListResponse\x12B\n" +
 	"\tquiz_list\x18\x01 \x01(\v2%.quiz_arena.quiz_registry.v1.QuizListR\bquizList\"p\n" +
 	"\x12GetQuizListRequest\x12\x0e\n" +
@@ -1707,7 +1706,6 @@ func file_quiz_arena_quiz_registry_v1_quiz_registry_proto_init() {
 	file_quiz_arena_quiz_registry_v1_quiz_registry_proto_msgTypes[0].OneofWrappers = []any{}
 	file_quiz_arena_quiz_registry_v1_quiz_registry_proto_msgTypes[2].OneofWrappers = []any{}
 	file_quiz_arena_quiz_registry_v1_quiz_registry_proto_msgTypes[8].OneofWrappers = []any{}
-	file_quiz_arena_quiz_registry_v1_quiz_registry_proto_msgTypes[10].OneofWrappers = []any{}
 	file_quiz_arena_quiz_registry_v1_quiz_registry_proto_msgTypes[12].OneofWrappers = []any{}
 	file_quiz_arena_quiz_registry_v1_quiz_registry_proto_msgTypes[18].OneofWrappers = []any{}
 	file_quiz_arena_quiz_registry_v1_quiz_registry_proto_msgTypes[21].OneofWrappers = []any{}

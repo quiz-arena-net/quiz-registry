@@ -109,7 +109,7 @@ message ListQuizzesResponse {
 message CreateQuizListRequest {
   // Minimal fields to create a list.
   string title = 1;
-  optional string description = 2;
+  string description = 2;
   string language = 3;
   repeated string tags = 4;
 }
