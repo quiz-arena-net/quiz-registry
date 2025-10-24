@@ -31,18 +31,13 @@ func main() {
 			quiz_registryv1connect.QuizRegistryServiceName,
 		),
 	))
-	mux.Handle(grpcreflect.NewHandlerV1(
-		grpcreflect.NewStaticReflector(
-			grpchealth.HealthV1ServiceName,
-			quiz_registryv1connect.QuizRegistryServiceName,
-		),
-	))
-	mux.Handle(grpcreflect.NewHandlerV1Alpha(
-		grpcreflect.NewStaticReflector(
-			grpchealth.HealthV1ServiceName,
-			quiz_registryv1connect.QuizRegistryServiceName,
-		),
-	))
+
+	reflector := grpcreflect.NewStaticReflector(
+		grpchealth.HealthV1ServiceName,
+		quiz_registryv1connect.QuizRegistryServiceName,
+	)
+	mux.Handle(grpcreflect.NewHandlerV1(reflector))
+	mux.Handle(grpcreflect.NewHandlerV1Alpha(reflector))
 
 	slog.Info("starting server", slog.String("addr", cfg.ServerAddr))
 	if err := http.ListenAndServe(
