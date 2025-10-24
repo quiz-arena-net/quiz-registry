@@ -6,6 +6,7 @@ require (
 	connectrpc.com/connect v1.18.1
 	connectrpc.com/grpchealth v1.4.0
 	connectrpc.com/grpcreflect v1.3.0
+	github.com/caarlos0/env/v11 v11.3.1
 	golang.org/x/net v0.44.0
 	google.golang.org/protobuf v1.36.9
 )
