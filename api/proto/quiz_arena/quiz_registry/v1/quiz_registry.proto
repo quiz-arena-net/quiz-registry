@@ -37,7 +37,7 @@ message CreateQuizRequest {
   string question = 2;
   string answer = 3;
   repeated AnswerOptions answer_options = 4;
-  repeated string tags = 5;
+  repeated string topics = 5;
 
   // Optional metadata
   optional QuizSource source = 6;
@@ -63,7 +63,7 @@ message UpdateQuizRequest {
   Quiz quiz = 1;
 
   // Required. Paths relative to Quiz. Example:
-  // "question,answer,answer_options,tags,title,description,source"
+  // "question,answer,answer_options,topics,title,description,source"
   // Certain fields (e.g. `id`, `created_at`, `updated_at`) must not be included
   // and will be rejected if set.
   google.protobuf.FieldMask update_mask = 2;
@@ -86,7 +86,7 @@ message ListQuizzesRequest {
   optional string list_id = 1; // limit to a list
   optional string author_id = 2; // limit to author
 
-  // Text filter (implementation-defined, e.g., tags:foo AND "substring")
+  // Text filter (implementation-defined, e.g., topics:foo AND "substring")
   optional string filter = 3;
 
   // Sorting (implementation-defined, e.g., "created_at desc")
@@ -111,7 +111,7 @@ message CreateQuizListRequest {
   string title = 1;
   string description = 2;
   string language = 3;
-  repeated string tags = 4;
+  repeated string topics = 4;
 }
 
 message CreateQuizListResponse {
@@ -190,7 +190,7 @@ message Quiz {
   string question = 4;
   string answer = 5;
   repeated AnswerOptions answer_options = 6;
-  repeated string tags = 7;
+  repeated string topics = 7;
   optional QuizSource source = 8;
 
   // Timestamps
@@ -208,7 +208,7 @@ message QuizList {
   string description = 4;
   string language = 5;
   int32 quiz_count = 6;
-  repeated string tags = 7;
+  repeated string topics = 7;
 
   // Timestamps
   google.protobuf.Timestamp created_at = 8;
