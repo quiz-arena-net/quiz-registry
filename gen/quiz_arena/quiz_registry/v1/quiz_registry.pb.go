@@ -31,7 +31,7 @@ type CreateQuizRequest struct {
 	Question      string           `protobuf:"bytes,2,opt,name=question,proto3" json:"question,omitempty"`
 	Answer        string           `protobuf:"bytes,3,opt,name=answer,proto3" json:"answer,omitempty"`
 	AnswerOptions []*AnswerOptions `protobuf:"bytes,4,rep,name=answer_options,json=answerOptions,proto3" json:"answer_options,omitempty"`
-	Topics        []string         `protobuf:"bytes,5,rep,name=topics,proto3" json:"topics,omitempty"`
+	TopicIds      []string         `protobuf:"bytes,5,rep,name=topic_ids,json=topicIds,proto3" json:"topic_ids,omitempty"`
 	// Optional metadata
 	Source        *QuizSource `protobuf:"bytes,6,opt,name=source,proto3,oneof" json:"source,omitempty"`
 	unknownFields protoimpl.UnknownFields
@@ -96,9 +96,9 @@ func (x *CreateQuizRequest) GetAnswerOptions() []*AnswerOptions {
 	return nil
 }
 
-func (x *CreateQuizRequest) GetTopics() []string {
+func (x *CreateQuizRequest) GetTopicIds() []string {
 	if x != nil {
-		return x.Topics
+		return x.TopicIds
 	}
 	return nil
 }
@@ -257,7 +257,7 @@ type UpdateQuizRequest struct {
 	// The quiz to update. Only fields in update_mask are applied.
 	Quiz *Quiz `protobuf:"bytes,1,opt,name=quiz,proto3" json:"quiz,omitempty"`
 	// Required. Paths relative to Quiz. Example:
-	// "question,answer,answer_options,topics,title,description,source"
+	// "question,answer,answer_options,topic_ids,title,description,source"
 	// Certain fields (e.g. `id`, `created_at`, `updated_at`) must not be included
 	// and will be rejected if set.
 	UpdateMask    *fieldmaskpb.FieldMask `protobuf:"bytes,2,opt,name=update_mask,json=updateMask,proto3" json:"update_mask,omitempty"`
@@ -446,7 +446,7 @@ type ListQuizzesRequest struct {
 	// Filter scope
 	ListId   *string `protobuf:"bytes,1,opt,name=list_id,json=listId,proto3,oneof" json:"list_id,omitempty"`       // limit to a list
 	AuthorId *string `protobuf:"bytes,2,opt,name=author_id,json=authorId,proto3,oneof" json:"author_id,omitempty"` // limit to author
-	// Text filter (implementation-defined, e.g., topics:foo AND "substring")
+	// Text filter (implementation-defined)
 	Filter *string `protobuf:"bytes,3,opt,name=filter,proto3,oneof" json:"filter,omitempty"`
 	// Sorting (implementation-defined, e.g., "created_at desc")
 	OrderBy  *string                `protobuf:"bytes,4,opt,name=order_by,json=orderBy,proto3,oneof" json:"order_by,omitempty"`
@@ -595,7 +595,7 @@ type CreateQuizListRequest struct {
 	Title         string   `protobuf:"bytes,1,opt,name=title,proto3" json:"title,omitempty"`
 	Description   string   `protobuf:"bytes,2,opt,name=description,proto3" json:"description,omitempty"`
 	Language      string   `protobuf:"bytes,3,opt,name=language,proto3" json:"language,omitempty"`
-	Topics        []string `protobuf:"bytes,4,rep,name=topics,proto3" json:"topics,omitempty"`
+	TopicIds      []string `protobuf:"bytes,4,rep,name=topic_ids,json=topicIds,proto3" json:"topic_ids,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -651,9 +651,9 @@ func (x *CreateQuizListRequest) GetLanguage() string {
 	return ""
 }
 
-func (x *CreateQuizListRequest) GetTopics() []string {
+func (x *CreateQuizListRequest) GetTopicIds() []string {
 	if x != nil {
-		return x.Topics
+		return x.TopicIds
 	}
 	return nil
 }
@@ -1238,7 +1238,7 @@ type Quiz struct {
 	Question      string           `protobuf:"bytes,4,opt,name=question,proto3" json:"question,omitempty"`
 	Answer        string           `protobuf:"bytes,5,opt,name=answer,proto3" json:"answer,omitempty"`
 	AnswerOptions []*AnswerOptions `protobuf:"bytes,6,rep,name=answer_options,json=answerOptions,proto3" json:"answer_options,omitempty"`
-	Topics        []string         `protobuf:"bytes,7,rep,name=topics,proto3" json:"topics,omitempty"`
+	TopicIds      []string         `protobuf:"bytes,7,rep,name=topic_ids,json=topicIds,proto3" json:"topic_ids,omitempty"`
 	Source        *QuizSource      `protobuf:"bytes,8,opt,name=source,proto3,oneof" json:"source,omitempty"`
 	// Timestamps
 	CreatedAt     *timestamppb.Timestamp `protobuf:"bytes,9,opt,name=created_at,json=createdAt,proto3" json:"created_at,omitempty"`
@@ -1319,9 +1319,9 @@ func (x *Quiz) GetAnswerOptions() []*AnswerOptions {
 	return nil
 }
 
-func (x *Quiz) GetTopics() []string {
+func (x *Quiz) GetTopicIds() []string {
 	if x != nil {
-		return x.Topics
+		return x.TopicIds
 	}
 	return nil
 }
@@ -1357,7 +1357,7 @@ type QuizList struct {
 	Description string   `protobuf:"bytes,4,opt,name=description,proto3" json:"description,omitempty"`
 	Language    string   `protobuf:"bytes,5,opt,name=language,proto3" json:"language,omitempty"`
 	QuizCount   int32    `protobuf:"varint,6,opt,name=quiz_count,json=quizCount,proto3" json:"quiz_count,omitempty"`
-	Topics      []string `protobuf:"bytes,7,rep,name=topics,proto3" json:"topics,omitempty"`
+	TopicIds    []string `protobuf:"bytes,7,rep,name=topic_ids,json=topicIds,proto3" json:"topic_ids,omitempty"`
 	// Timestamps
 	CreatedAt     *timestamppb.Timestamp `protobuf:"bytes,8,opt,name=created_at,json=createdAt,proto3" json:"created_at,omitempty"`
 	UpdatedAt     *timestamppb.Timestamp `protobuf:"bytes,9,opt,name=updated_at,json=updatedAt,proto3" json:"updated_at,omitempty"`
@@ -1437,9 +1437,9 @@ func (x *QuizList) GetQuizCount() int32 {
 	return 0
 }
 
-func (x *QuizList) GetTopics() []string {
+func (x *QuizList) GetTopicIds() []string {
 	if x != nil {
-		return x.Topics
+		return x.TopicIds
 	}
 	return nil
 }
@@ -1462,13 +1462,13 @@ var File_quiz_arena_quiz_registry_v1_quiz_registry_proto protoreflect.FileDescri
 
 const file_quiz_arena_quiz_registry_v1_quiz_registry_proto_rawDesc = "" +
 	"\n" +
-	"/quiz_arena/quiz_registry/v1/quiz_registry.proto\x12\x1bquiz_arena.quiz_registry.v1\x1a google/protobuf/field_mask.proto\x1a\x1fgoogle/protobuf/timestamp.proto\"\x9c\x02\n" +
+	"/quiz_arena/quiz_registry/v1/quiz_registry.proto\x12\x1bquiz_arena.quiz_registry.v1\x1a google/protobuf/field_mask.proto\x1a\x1fgoogle/protobuf/timestamp.proto\"\xa1\x02\n" +
 	"\x11CreateQuizRequest\x12\x17\n" +
 	"\alist_id\x18\x01 \x01(\tR\x06listId\x12\x1a\n" +
 	"\bquestion\x18\x02 \x01(\tR\bquestion\x12\x16\n" +
 	"\x06answer\x18\x03 \x01(\tR\x06answer\x12Q\n" +
-	"\x0eanswer_options\x18\x04 \x03(\v2*.quiz_arena.quiz_registry.v1.AnswerOptionsR\ranswerOptions\x12\x16\n" +
-	"\x06topics\x18\x05 \x03(\tR\x06topics\x12D\n" +
+	"\x0eanswer_options\x18\x04 \x03(\v2*.quiz_arena.quiz_registry.v1.AnswerOptionsR\ranswerOptions\x12\x1b\n" +
+	"\ttopic_ids\x18\x05 \x03(\tR\btopicIds\x12D\n" +
 	"\x06source\x18\x06 \x01(\v2'.quiz_arena.quiz_registry.v1.QuizSourceH\x00R\x06source\x88\x01\x01B\t\n" +
 	"\a_source\"K\n" +
 	"\x12CreateQuizResponse\x125\n" +
@@ -1509,12 +1509,12 @@ const file_quiz_arena_quiz_registry_v1_quiz_registry_proto_rawDesc = "" +
 	"_read_mask\"z\n" +
 	"\x13ListQuizzesResponse\x12;\n" +
 	"\aquizzes\x18\x01 \x03(\v2!.quiz_arena.quiz_registry.v1.QuizR\aquizzes\x12&\n" +
-	"\x0fnext_page_token\x18\x02 \x01(\tR\rnextPageToken\"\x83\x01\n" +
+	"\x0fnext_page_token\x18\x02 \x01(\tR\rnextPageToken\"\x88\x01\n" +
 	"\x15CreateQuizListRequest\x12\x14\n" +
 	"\x05title\x18\x01 \x01(\tR\x05title\x12 \n" +
 	"\vdescription\x18\x02 \x01(\tR\vdescription\x12\x1a\n" +
-	"\blanguage\x18\x03 \x01(\tR\blanguage\x12\x16\n" +
-	"\x06topics\x18\x04 \x03(\tR\x06topics\"\\\n" +
+	"\blanguage\x18\x03 \x01(\tR\blanguage\x12\x1b\n" +
+	"\ttopic_ids\x18\x04 \x03(\tR\btopicIds\"\\\n" +
 	"\x16CreateQuizListResponse\x12B\n" +
 	"\tquiz_list\x18\x01 \x01(\v2%.quiz_arena.quiz_registry.v1.QuizListR\bquizList\"p\n" +
 	"\x12GetQuizListRequest\x12\x0e\n" +
@@ -1558,22 +1558,22 @@ const file_quiz_arena_quiz_registry_v1_quiz_registry_proto_rawDesc = "" +
 	"QuizSource\x12\x12\n" +
 	"\x04name\x18\x01 \x01(\tR\x04name\x12\x15\n" +
 	"\x03url\x18\x02 \x01(\tH\x00R\x03url\x88\x01\x01B\x06\n" +
-	"\x04_url\"\xb2\x03\n" +
+	"\x04_url\"\xb7\x03\n" +
 	"\x04Quiz\x12\x0e\n" +
 	"\x02id\x18\x01 \x01(\tR\x02id\x12\x17\n" +
 	"\alist_id\x18\x02 \x01(\tR\x06listId\x12\x1b\n" +
 	"\tauthor_id\x18\x03 \x01(\tR\bauthorId\x12\x1a\n" +
 	"\bquestion\x18\x04 \x01(\tR\bquestion\x12\x16\n" +
 	"\x06answer\x18\x05 \x01(\tR\x06answer\x12Q\n" +
-	"\x0eanswer_options\x18\x06 \x03(\v2*.quiz_arena.quiz_registry.v1.AnswerOptionsR\ranswerOptions\x12\x16\n" +
-	"\x06topics\x18\a \x03(\tR\x06topics\x12D\n" +
+	"\x0eanswer_options\x18\x06 \x03(\v2*.quiz_arena.quiz_registry.v1.AnswerOptionsR\ranswerOptions\x12\x1b\n" +
+	"\ttopic_ids\x18\a \x03(\tR\btopicIds\x12D\n" +
 	"\x06source\x18\b \x01(\v2'.quiz_arena.quiz_registry.v1.QuizSourceH\x00R\x06source\x88\x01\x01\x129\n" +
 	"\n" +
 	"created_at\x18\t \x01(\v2\x1a.google.protobuf.TimestampR\tcreatedAt\x129\n" +
 	"\n" +
 	"updated_at\x18\n" +
 	" \x01(\v2\x1a.google.protobuf.TimestampR\tupdatedAtB\t\n" +
-	"\a_source\"\xb6\x02\n" +
+	"\a_source\"\xbb\x02\n" +
 	"\bQuizList\x12\x0e\n" +
 	"\x02id\x18\x01 \x01(\tR\x02id\x12\x19\n" +
 	"\bowner_id\x18\x02 \x01(\tR\aownerId\x12\x14\n" +
@@ -1581,8 +1581,8 @@ const file_quiz_arena_quiz_registry_v1_quiz_registry_proto_rawDesc = "" +
 	"\vdescription\x18\x04 \x01(\tR\vdescription\x12\x1a\n" +
 	"\blanguage\x18\x05 \x01(\tR\blanguage\x12\x1d\n" +
 	"\n" +
-	"quiz_count\x18\x06 \x01(\x05R\tquizCount\x12\x16\n" +
-	"\x06topics\x18\a \x03(\tR\x06topics\x129\n" +
+	"quiz_count\x18\x06 \x01(\x05R\tquizCount\x12\x1b\n" +
+	"\ttopic_ids\x18\a \x03(\tR\btopicIds\x129\n" +
 	"\n" +
 	"created_at\x18\b \x01(\v2\x1a.google.protobuf.TimestampR\tcreatedAt\x129\n" +
 	"\n" +
