@@ -21,6 +21,13 @@ service QuizRegistryService {
   rpc UpdateQuizList(UpdateQuizListRequest) returns (UpdateQuizListResponse);
   rpc DeleteQuizList(DeleteQuizListRequest) returns (DeleteQuizListResponse);
   rpc ListQuizLists(ListQuizListsRequest) returns (ListQuizListsResponse);
+
+  // QuizTopic CRUD
+  rpc CreateQuizTopic(CreateQuizTopicRequest) returns (CreateQuizTopicResponse);
+  rpc GetQuizTopic(GetQuizTopicRequest) returns (GetQuizTopicResponse);
+  rpc UpdateQuizTopic(UpdateQuizTopicRequest) returns (UpdateQuizTopicResponse);
+  rpc DeleteQuizTopic(DeleteQuizTopicRequest) returns (DeleteQuizTopicResponse);
+  rpc ListQuizTopics(ListQuizTopicsRequest) returns (ListQuizTopicsResponse);
 }
 
 /* ===========================
@@ -164,6 +171,58 @@ message ListQuizListsResponse {
   string next_page_token = 2;
 }
 
+// ---- QuizTopic ----
+
+message CreateQuizTopicRequest {
+  string display_name = 1;
+  optional string icon_url = 2;
+}
+
+message CreateQuizTopicResponse {
+  QuizTopic quiz_topic = 1;
+}
+
+message GetQuizTopicRequest {
+  string id = 1;
+  optional google.protobuf.FieldMask read_mask = 2;
+}
+
+message GetQuizTopicResponse {
+  QuizTopic quiz_topic = 1;
+}
+
+message UpdateQuizTopicRequest {
+  QuizTopic quiz_topic = 1;
+  google.protobuf.FieldMask update_mask = 2;
+}
+
+message UpdateQuizTopicResponse {
+  QuizTopic quiz_topic = 1;
+}
+
+message DeleteQuizTopicRequest {
+  string id = 1;
+}
+
+message DeleteQuizTopicResponse {
+  QuizTopic quiz_topic = 1;
+}
+
+message ListQuizTopicsRequest {
+  optional string filter = 1;
+  optional string order_by = 2;
+
+  optional google.protobuf.FieldMask read_mask = 4;
+
+  int32 page_size = 5;
+  string page_token = 6;
+}
+
+message ListQuizTopicsResponse {
+  repeated QuizTopic quiz_topics = 1;
+  string next_page_token = 2;
+}
+
 /* ===========================
    Resource Messages
    =========================== */
@@ -213,4 +272,12 @@ message QuizList {
   // Timestamps
   google.protobuf.Timestamp created_at = 8;
   google.protobuf.Timestamp updated_at = 9;
+}
+
+message QuizTopic {
+  string id = 1;
+  string slug = 2;
+  optional string icon_url = 3;
+  optional string display_name = 4;
+  optional string canonical_topic_id = 5;
 }
